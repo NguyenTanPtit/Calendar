@@ -49,4 +49,6 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.1.0'
     // bottom_navi
     implementation 'com.google.android.material:material:1.8.0'
+    //fragment
+    implementation "androidx.fragment:fragment:1.2.0-beta02"
 }

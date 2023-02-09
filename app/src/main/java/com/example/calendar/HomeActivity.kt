@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 
 
 class HomeActivity : AppCompatActivity() {
@@ -28,12 +30,12 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var weatherImg:ImageView
     private lateinit var profileImg:ImageView
 
+    private lateinit var fragment: Fragment
+
     private var selectedTab :Int = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
-
         init()
     }
 
@@ -53,6 +55,9 @@ class HomeActivity : AppCompatActivity() {
         weatherImg=findViewById(R.id.nav_img_weather)
         profileImg=findViewById(R.id.nav_img_profile)
         setOnclick()
+        //default fragment 1
+        fragment  = HomeFragment()
+        loadFragment(fragment)
     }
 
     private fun setOnclick(){
@@ -63,6 +68,8 @@ class HomeActivity : AppCompatActivity() {
                 homeImg.layoutParams?.width = 65
                 homeImg.setImageResource(R.drawable.calendar_selected_icon)
                 homeLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
+                fragment = HomeFragment()
+                loadFragment(fragment)
                 //unselect 3 tab
 
                 litTv.visibility = View.GONE
@@ -95,6 +102,8 @@ class HomeActivity : AppCompatActivity() {
                 litImg.layoutParams?.width = 65
                 litImg.setImageResource(R.drawable.book_selected_icon)
                 litLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
+                fragment = LitFragment()
+                loadFragment(fragment)
                 //unselect 3 tab
 
                 homeTv.visibility = View.GONE
@@ -127,6 +136,8 @@ class HomeActivity : AppCompatActivity() {
                 weatherImg.layoutParams?.width = 65
                 weatherImg.setImageResource(R.drawable.weather_selected_icon)
                 weatherLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
+                fragment = WeatherFragment()
+                loadFragment(fragment)
                 //unselect 3 tab
 
                 litTv.visibility = View.GONE
@@ -159,6 +170,8 @@ class HomeActivity : AppCompatActivity() {
                 profileImg.layoutParams?.width = 65
                 profileImg.setImageResource(R.drawable.user_selected_icon)
                 profileLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
+                fragment = ProfileFragment()
+                loadFragment(fragment)
                 //unselect 3 tab
 
                 litTv.visibility = View.GONE
@@ -184,6 +197,13 @@ class HomeActivity : AppCompatActivity() {
                 selectedTab = 4
             }
         }
+    }
+
+    private fun loadFragment(fragment: Fragment){
+        val fragmentTransaction : FragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame_home,fragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 }
 
