@@ -1,7 +1,6 @@
 package com.example.calendar
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
@@ -54,10 +53,12 @@ class HomeActivity : AppCompatActivity() {
         litImg=findViewById(R.id.nav_img_lit)
         weatherImg=findViewById(R.id.nav_img_weather)
         profileImg=findViewById(R.id.nav_img_profile)
-        setOnclick()
+
         //default fragment 1
-        fragment  = HomeFragment()
+        fragment  = CalendarFragment()
         loadFragment(fragment)
+
+        setOnclick()
     }
 
     private fun setOnclick(){
@@ -68,10 +69,10 @@ class HomeActivity : AppCompatActivity() {
                 homeImg.layoutParams?.width = 65
                 homeImg.setImageResource(R.drawable.calendar_selected_icon)
                 homeLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
-                fragment = HomeFragment()
+                fragment = CalendarFragment()
                 loadFragment(fragment)
-                //unselect 3 tab
 
+                //unselect 3 tab
                 litTv.visibility = View.GONE
                 litImg.layoutParams?.width = 80
                 litImg.setImageResource(R.drawable.book_icon)
@@ -88,7 +89,7 @@ class HomeActivity : AppCompatActivity() {
                 val anim = ScaleAnimation(0.8f,1.0f,1f,1f,
                     Animation.RELATIVE_TO_SELF,0.0f,
                     Animation.RELATIVE_TO_SELF,0.0f)
-                anim.duration = 300
+                anim.duration = 350
                 anim.fillAfter = true
                 homeLayout.startAnimation(anim)
                 selectedTab = 1
@@ -104,8 +105,8 @@ class HomeActivity : AppCompatActivity() {
                 litLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
                 fragment = LitFragment()
                 loadFragment(fragment)
-                //unselect 3 tab
 
+                //unselect 3 tab
                 homeTv.visibility = View.GONE
                 homeImg.layoutParams?.width = 80
                 homeImg.setImageResource(R.drawable.calendar_icon)
@@ -122,7 +123,7 @@ class HomeActivity : AppCompatActivity() {
                 val anim = ScaleAnimation(0.8f,1.0f,1f,1f,
                     Animation.RELATIVE_TO_SELF,0.5f,
                     Animation.RELATIVE_TO_SELF,0.0f)
-                anim.duration = 300
+                anim.duration = 350
                 anim.fillAfter = true
                 litLayout.startAnimation(anim)
 
@@ -138,8 +139,8 @@ class HomeActivity : AppCompatActivity() {
                 weatherLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
                 fragment = WeatherFragment()
                 loadFragment(fragment)
-                //unselect 3 tab
 
+                //unselect 3 tab
                 litTv.visibility = View.GONE
                 litImg.layoutParams?.width = 80
                 litImg.setImageResource(R.drawable.book_icon)
@@ -156,7 +157,7 @@ class HomeActivity : AppCompatActivity() {
                 val anim = ScaleAnimation(0.8f,1.0f,1f,1f,
                     Animation.RELATIVE_TO_SELF,0.5f,
                     Animation.RELATIVE_TO_SELF,0.0f)
-                anim.duration = 300
+                anim.duration = 350
                 anim.fillAfter = true
                 weatherLayout.startAnimation(anim)
 
@@ -172,8 +173,8 @@ class HomeActivity : AppCompatActivity() {
                 profileLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
                 fragment = ProfileFragment()
                 loadFragment(fragment)
-                //unselect 3 tab
 
+                //unselect 3 tab
                 litTv.visibility = View.GONE
                 litImg.layoutParams?.width = 80
                 litImg.setImageResource(R.drawable.book_icon)
@@ -190,7 +191,7 @@ class HomeActivity : AppCompatActivity() {
                 val anim = ScaleAnimation(0.8f,1.0f,1f,1f,
                     Animation.RELATIVE_TO_SELF,1.0f,
                     Animation.RELATIVE_TO_SELF,0.0f)
-                anim.duration = 300
+                anim.duration = 350
                 anim.fillAfter = true
                 profileLayout.startAnimation(anim)
 
