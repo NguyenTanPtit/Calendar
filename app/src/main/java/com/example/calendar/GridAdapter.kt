@@ -1,5 +1,6 @@
 package com.example.calendar
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,6 +27,8 @@ class GridAdapter : ArrayAdapter<Any> {
         this.layoutInflater = LayoutInflater.from(context)
     }
 
+
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val monthDate = dates[position]
         val dateCalendar = Calendar.getInstance()
@@ -37,7 +40,7 @@ class GridAdapter : ArrayAdapter<Any> {
         Log.d("currentMonth", currentMonth.toString())
         val displayYear = dateCalendar.get(Calendar.YEAR)
         val currentYear = currentDate.get(Calendar.YEAR)
-
+        Log.d("currentYear", currentYear.toString())
         val view:View = convertView ?: layoutInflater.inflate(R.layout.single_cell_layout,parent,false)
         val dayNumber:TextView = view.findViewById(R.id.day_cal)
         if(displayMonth == currentMonth && currentYear == displayYear){
@@ -45,6 +48,19 @@ class GridAdapter : ArrayAdapter<Any> {
         }
         else{
             dayNumber.setTextColor(ContextCompat.getColor(context,R.color.gray))
+        }
+        val cal2 = Calendar.getInstance()
+        val currentDay = cal2.get(Calendar.DAY_OF_MONTH)
+        val monthOfCurrentDay = cal2.get(Calendar.MONTH) +1
+        Log.d("monthOfCurrentDay", monthOfCurrentDay.toString())
+        val yearOfCurrentDay = cal2.get(Calendar.YEAR)
+        Log.d("yearOfCurrentDay", yearOfCurrentDay.toString())
+        Log.d("ngày hôm nay ", (currentDay == dayNum && monthOfCurrentDay  == displayMonth
+                && yearOfCurrentDay == displayYear).toString())
+        if(currentDay == dayNum && monthOfCurrentDay == displayMonth
+            && yearOfCurrentDay == displayYear ){
+            view.setBackgroundDrawable(context.resources.getDrawable(R.drawable.bg_cell_gridview))
+            dayNumber.setTextColor(ContextCompat.getColor(context,R.color.white))
         }
 
         dayNumber.text = dayNum.toString()

@@ -28,7 +28,7 @@ class CustomCalendarView : LinearLayout {
     private val MAX_DAY = 42
     var cal: Calendar = Calendar.getInstance()
 
-    @get:JvmName("getAdapterContext")
+//    @get:JvmName("getAdapterContext")
     private lateinit var context : Context
 
     private var dates : MutableList<Date> = mutableListOf()
@@ -59,7 +59,8 @@ class CustomCalendarView : LinearLayout {
 
 
     private fun initLayout(){
-        val inflater :LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater :LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)
+                as LayoutInflater
         val view : View = inflater.inflate(R.layout.calendar_layout,this)
         nextBtn = view.findViewById(R.id.nextBtn)
         preBtn = view.findViewById(R.id.backBtn)
@@ -100,17 +101,21 @@ class CustomCalendarView : LinearLayout {
         gridView.setOnItemClickListener{ adapterView, view, position, id ->
             val builder :AlertDialog.Builder = AlertDialog.Builder(context)
             builder.setCancelable(true)
+            val simpleDateFormat = SimpleDateFormat("HH:mm a")
             val addEventView :View = LayoutInflater.from(adapterView.context)
                 .inflate(R.layout.add_event_layout,null)
             val eventName:EditText = addEventView.findViewById(R.id.event_title)
             val eventTime:LinearLayout = addEventView.findViewById(R.id.event_time)
             val addEvent:Button = addEventView.findViewById(R.id.event_add_btn)
             val timeSet: TextView = addEventView.findViewById(R.id.time_set)
+            val currentTime = simpleDateFormat.format(cal.time)
+            timeSet.text = currentTime.toString()
 
             eventTime.setOnClickListener{
                 val cal :Calendar = Calendar.getInstance()
                 val hours = cal.get(Calendar.HOUR_OF_DAY)
                 val min = cal.get(Calendar.MINUTE)
+
                 val timePicker = TimePickerDialog(addEventView.context,
                     androidx.appcompat.R.style.Theme_AppCompat_Dialog,
                     { view, hourOfDay, minute ->
@@ -118,7 +123,6 @@ class CustomCalendarView : LinearLayout {
                         c.set(Calendar.HOUR_OF_DAY,hourOfDay)
                         c.set(Calendar.MINUTE,minute)
                         c.timeZone = TimeZone.getDefault()
-                        val simpleDateFormat = SimpleDateFormat("HH:mm a")
                         val time = simpleDateFormat.format(c.time)
                         timeSet.text = time
                     },hours,min,false)

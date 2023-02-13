@@ -45,6 +45,7 @@
             android:background="@drawable/bg_edittext_focused"/>
     </LinearLayout>
     <Button
+        android:elevation="8dp"
         android:id="@+id/event_add_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

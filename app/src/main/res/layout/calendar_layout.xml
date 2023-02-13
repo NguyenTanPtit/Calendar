@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/linear_cal"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear_cal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -64,17 +65,21 @@
                 android:layout_weight="1"
                 android:gravity="start"
                 android:text="Tue"
+                android:paddingStart="7dp"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:ignore="RtlSymmetry" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="start"
+                android:gravity="center"
                 android:text="Wed"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:paddingEnd="5dp"
+                tools:ignore="RtlSymmetry" />
 
             <TextView
                 android:layout_width="0dp"
@@ -101,6 +106,7 @@
                 android:gravity="center"
                 android:text="Sat"
                 android:textColor="@color/black"
+                android:paddingStart="5dp"
                 android:textSize="16sp" />
 
             <TextView
@@ -109,6 +115,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Sun"
+                android:paddingStart="10dp"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </LinearLayout>
