@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/background_cal">
+
+    <EditText
+        android:id="@+id/event_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:inputType="text"
+        android:lines="1"
+        android:singleLine="true"
+        android:layout_margin="20dp"
+        android:hint="Add title"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_edittext"
+        android:paddingStart="20dp"
+        android:paddingEnd="5dp"/>
+
+    <LinearLayout
+        android:id="@+id/event_time"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/clock_icon"/>
+
+        <TextView
+            android:id="@+id/time_set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:44 PM"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_marginStart="15dp"
+            android:background="@drawable/bg_edittext_focused"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/event_add_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_button"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp"/>
+</LinearLayout>
