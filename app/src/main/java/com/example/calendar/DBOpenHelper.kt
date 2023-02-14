@@ -46,6 +46,10 @@ class DBOpenHelper(context: Context) :
         val selectArgs = arrayOf(month,year)
         return db.query(DBStructure.EVENT_TABLE_NAME,pro,select,selectArgs,null,null,null)
     }
+
+    fun deleteAllEvent(db:SQLiteDatabase){
+        db.execSQL("delete from "+ DBStructure.EVENT_TABLE_NAME)
+    }
 }
 
 
