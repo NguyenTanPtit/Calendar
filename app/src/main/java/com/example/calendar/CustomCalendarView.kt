@@ -1,14 +1,9 @@
 package com.example.calendar
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
+  import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import android.widget.GridView
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -17,17 +12,17 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CustomCalendarView : LinearLayout {
-    private lateinit var nextBtn : ImageView
-    private lateinit var preBtn : ImageView
+    private lateinit var nextBtn: ImageView
+    private lateinit var preBtn: ImageView
     private lateinit var currentDate: TextView
-    private lateinit var gridView :GridView
+    private lateinit var gridView: GridView
     private lateinit var gridAdapter: GridAdapter
 
     private val MAX_DAY = 42
     private var cal: Calendar = Calendar.getInstance()
-    private lateinit var context : Context
-    private var dates : MutableList<Date> = mutableListOf()
-    private var eventList : MutableList<Events> = mutableListOf()
+    private lateinit var context: Context
+    private var dates: MutableList<Date> = mutableListOf()
+    private var eventList: MutableList<Events> = mutableListOf()
 
     private var dateFormat = SimpleDateFormat("MMM yyyy")
     var monthFormat = SimpleDateFormat("MM")
@@ -35,7 +30,7 @@ class CustomCalendarView : LinearLayout {
 
     constructor(context: Context) : super(context)
 
-    constructor(context: Context, attrs : AttributeSet) : super(context, attrs){
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         this.context = context
         initLayout()
     }
@@ -47,27 +42,26 @@ class CustomCalendarView : LinearLayout {
     )
 
 
-    private fun initLayout(){
-        val inflater :LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)
+    private fun initLayout() {
+        val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)
                 as LayoutInflater
-        val view : View = inflater.inflate(R.layout.calendar_layout,this)
+        val view: View = inflater.inflate(R.layout.calendar_layout, this)
         nextBtn = view.findViewById(R.id.nextBtn)
         preBtn = view.findViewById(R.id.backBtn)
         currentDate = view.findViewById(R.id.currentTime)
-        gridView =view.findViewById(R.id.grid_cal)
+        gridView = view.findViewById(R.id.grid_cal)
     }
 
 
-
-    fun getGridView() :GridView{
+    fun getGridView(): GridView {
         return gridView
     }
 
-    fun getContexts():Context{
+    fun getContexts(): Context {
         return context
     }
 
-    fun getCurrentDate() :TextView{
+    fun getCurrentDate(): TextView {
         return currentDate
     }
 

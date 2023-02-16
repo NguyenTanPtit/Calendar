@@ -3,18 +3,21 @@ package com.example.calendar
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,6 +33,8 @@ class CalendarFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var recyclerAdapter: EventRecyclerAdapter
+    private lateinit var recyclerView: RecyclerView
     private lateinit var cal :CustomCalendarView
     private lateinit var view : View
     private lateinit var gridView : GridView
@@ -37,15 +42,19 @@ class CalendarFragment : Fragment() {
     private lateinit var gridAdapter: GridAdapter
     private lateinit var nextBtn: ImageView
     private lateinit var preBtn: ImageView
+    private lateinit var floatBtnAddEvent: FloatingActionButton
 
     private val MAX_DAY = 42
+    private var currentPosition = -1
+    private var currentDatePos = -1
 
     private var dateFormat = SimpleDateFormat("MMM yyyy")
     private val dateFormatSave = SimpleDateFormat("dd/MM/yyyy")
     var monthFormat = SimpleDateFormat("MM")
     var yearFormat = SimpleDateFormat("yyyy")
     private var dates : MutableList<Date> = mutableListOf()
-    private var eventList : MutableList<Events> = mutableListOf()
+    private var eventMonthList : MutableList<Events> = mutableListOf()
+    private var eventDayList: MutableList<Events> = mutableListOf()
     private val cal2: Calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +65,7 @@ class CalendarFragment : Fragment() {
         }
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,6 +74,10 @@ class CalendarFragment : Fragment() {
         view  = inflater.inflate(R.layout.fragment_calendar, container, false)
         initView()
         return view
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recyclerView = view.findViewById(R.id.recycle_cal_event)
     }
 
     companion object {
@@ -88,9 +102,11 @@ class CalendarFragment : Fragment() {
 
     private fun initView(){
         cal = view.findViewById(R.id.custom_cal)
+        recyclerView = view.findViewById(R.id.recycle_cal_event)
         gridView = cal.getGridView()
         nextBtn = cal.getNextBtn()
         preBtn = cal.getPreBtn()
+        floatBtnAddEvent = view.findViewById(R.id.float_btn_add_event_cal)
         setupCal()
         nextBtn.setOnClickListener{
             cal2.add(Calendar.MONTH,+1)
@@ -101,63 +117,31 @@ class CalendarFragment : Fragment() {
             cal2.add(Calendar.MONTH,-1)
             setupCal()
         }
+        currentDatePos = getCurrentDatePosition()
+        currentPosition = currentDatePos
+        Log.d("currentDatePos", getCurrentDatePosition().toString())
+        initRecView(currentDatePos)
         setOnClickItemCal()
+        addEventOnClick()
     }
 
+    @SuppressLint("NotifyDataSetChanged", "UseCompatLoadingForDrawables")
     private fun setOnClickItemCal(){
-        val cal3 = Calendar.getInstance()
-        gridView.setOnItemClickListener{ adapterView, view, position, id ->
-            val builder : AlertDialog.Builder = AlertDialog.Builder(context)
-            builder.setCancelable(true)
-            val simpleDateFormat = SimpleDateFormat("HH:mm a")
-            val addEventView :View = LayoutInflater.from(adapterView.context)
-                .inflate(R.layout.add_event_layout,null)
-            val eventName: EditText = addEventView.findViewById(R.id.event_title)
-            val eventTime: LinearLayout = addEventView.findViewById(R.id.event_time)
-            val addEvent: Button = addEventView.findViewById(R.id.event_add_btn)
-            val timeSet: TextView = addEventView.findViewById(R.id.time_set)
-            val currentTime = simpleDateFormat.format(cal3.time)
-            timeSet.text = currentTime.toString()
-
-            eventTime.setOnClickListener{
-                val cal : Calendar = Calendar.getInstance()
-                val hours = cal.get(Calendar.HOUR_OF_DAY)
-                val min = cal.get(Calendar.MINUTE)
-
-                val timePicker = TimePickerDialog(addEventView.context,
-                    androidx.appcompat.R.style.Theme_AppCompat_Dialog,
-                    { view, hourOfDay, minute ->
-                        val c = Calendar.getInstance()
-                        c.set(Calendar.HOUR_OF_DAY,hourOfDay)
-                        c.set(Calendar.MINUTE,minute)
-                        c.timeZone = TimeZone.getDefault()
-                        val time = simpleDateFormat.format(c.time)
-                        timeSet.text = time
-                    },hours,min,false)
-                timePicker.show()
+        gridView.setOnItemClickListener { parent, view, position, id ->
+            currentDatePos = gridAdapter.getCurrentDatePosition()
+            currentPosition = position
+            if(position!= currentDatePos) {
+                view.background = parent.context.resources
+                    .getDrawable(R.drawable.bg_cell_gridview_select,null)
             }
-
-            val date = dateFormatSave.format(dates[position])
-            Log.d("Date Saved", date.toString())
-            val month = monthFormat.format(dates[position])
-            val year = yearFormat.format(dates[position])
-
-            addEvent.setOnClickListener {
-                val name = eventName.text.toString()
-                if(name.isBlank()){
-                    Toast.makeText(context,"Title is not blank!", Toast.LENGTH_SHORT).show()
-                }
-                else {
-                    saveEvent(name, timeSet.text.toString(), date, month, year)
-                    setupCal()
-                    alertDialog.dismiss()
+            for(i in 0 until dates.size){
+                val c :View = parent.getChildAt(i)
+                if(i!=position && i!=currentDatePos){
+                    c.background = parent.context.resources
+                        .getDrawable(R.drawable.bg_normal_day,null)
                 }
             }
-
-            builder.setView(addEventView)
-            alertDialog = builder.create()
-            alertDialog.show()
-            alertDialog.window?.setBackgroundDrawableResource(R.drawable.bg_alert_dialog)
+            initRecView(position)
         }
 
     }
@@ -185,11 +169,12 @@ class CalendarFragment : Fragment() {
             dates.add(month.time)
             month.add(Calendar.DAY_OF_MONTH,1)
         }
-        gridAdapter = GridAdapter(cal.getContexts(),dates,cal2,eventList)
+        gridAdapter = GridAdapter(cal.getContexts(),dates,cal2,eventMonthList)
         gridView.adapter = gridAdapter
     }
     @SuppressLint("Range")
     private fun getEventPerMonth(month: String, year:String){
+        eventMonthList.clear()
         val dbOpen = DBOpenHelper(cal.getContexts())
         val db: SQLiteDatabase = dbOpen.readableDatabase
         val cursor : Cursor = dbOpen.readEventMonth(month,year, db)
@@ -200,9 +185,101 @@ class CalendarFragment : Fragment() {
             val months = cursor.getString(cursor.getColumnIndex(DBStructure.MONTH))
             val years = cursor.getString(cursor.getColumnIndex(DBStructure.YEAR))
             val e = Events(event, time, date, months, years)
-            eventList.add(e)
+            eventMonthList.add(e)
         }
         cursor.close()
         dbOpen.close()
+    }
+
+    @SuppressLint("Range")
+    private fun getEventPerDay(day: String){
+        eventDayList.clear()
+        val dbOpen = DBOpenHelper(cal.getContexts())
+        val db: SQLiteDatabase = dbOpen.readableDatabase
+        val cursor : Cursor = dbOpen.readEventDate(day,db)
+        while (cursor.moveToNext()){
+            val event = cursor.getString(cursor.getColumnIndex(DBStructure.EVENT))
+            val time = cursor.getString(cursor.getColumnIndex(DBStructure.TIME))
+            val date = cursor.getString(cursor.getColumnIndex(DBStructure.DATE))
+            val months = cursor.getString(cursor.getColumnIndex(DBStructure.MONTH))
+            val years = cursor.getString(cursor.getColumnIndex(DBStructure.YEAR))
+            val e = Events(event, time, date, months, years)
+            eventDayList.add(e)
+        }
+        cursor.close()
+        dbOpen.close()
+    }
+
+    private fun initRecView(position:Int){
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        val date = dateFormatSave.format(dates[position])
+        getEventPerDay(date)
+        Log.d("listEventDate", eventDayList.size.toString())
+        recyclerAdapter = EventRecyclerAdapter(context,eventDayList)
+        recyclerView.adapter = recyclerAdapter
+    }
+
+    private fun addEventOnClick(){
+        val cal3 = Calendar.getInstance()
+        floatBtnAddEvent.setOnClickListener{
+            val builder : AlertDialog.Builder = AlertDialog.Builder(context)
+            builder.setCancelable(true)
+            val simpleDateFormat = SimpleDateFormat("HH:mm a")
+            val addEventView :View = LayoutInflater.from(context)
+                .inflate(R.layout.add_event_layout,null)
+            val eventName: EditText = addEventView.findViewById(R.id.event_title)
+            val eventTime: LinearLayout = addEventView.findViewById(R.id.event_time)
+            val addEvent: Button = addEventView.findViewById(R.id.event_add_btn)
+            val timeSet: TextView = addEventView.findViewById(R.id.time_set)
+            val currentTime = simpleDateFormat.format(cal3.time)
+            timeSet.text = currentTime.toString()
+
+            eventTime.setOnClickListener{
+                val cal : Calendar = Calendar.getInstance()
+                val hours = cal.get(Calendar.HOUR_OF_DAY)
+                val min = cal.get(Calendar.MINUTE)
+
+                val timePicker = TimePickerDialog(addEventView.context,
+                    androidx.appcompat.R.style.Theme_AppCompat_Dialog,
+                    { view, hourOfDay, minute ->
+                        val c = Calendar.getInstance()
+                        c.set(Calendar.HOUR_OF_DAY,hourOfDay)
+                        c.set(Calendar.MINUTE,minute)
+                        c.timeZone = TimeZone.getDefault()
+                        val time = simpleDateFormat.format(c.time)
+                        timeSet.text = time
+                    },hours,min,false)
+                timePicker.show()
+            }
+
+            val date = dateFormatSave.format(dates[currentPosition])
+            Log.d("Date Saved", date.toString())
+            val month = monthFormat.format(dates[currentPosition])
+            val year = yearFormat.format(dates[currentPosition])
+
+            addEvent.setOnClickListener {
+                val name = eventName.text.toString()
+                if(name.isBlank()){
+                    Toast.makeText(context,"Title is not blank!", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    saveEvent(name, timeSet.text.toString(), date, month, year)
+                    setupCal()
+                    alertDialog.dismiss()
+                }
+            }
+
+            builder.setView(addEventView)
+            alertDialog = builder.create()
+            alertDialog.show()
+            alertDialog.window?.setBackgroundDrawableResource(R.drawable.bg_alert_dialog)
+        }
+    }
+
+    private fun getCurrentDatePosition(): Int {
+        val cal3 = cal2.clone() as Calendar
+//        Log.d("time", (dates[17]== cal3.time).toString())
+//        Log.d("time2", cal3.time.toString())
+        return dates.indexOf(cal3.time)
     }
 }

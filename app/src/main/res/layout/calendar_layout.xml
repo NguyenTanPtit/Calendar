@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="5dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -124,6 +124,8 @@
             android:id="@+id/grid_cal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:horizontalSpacing="5dp"
+            android:verticalSpacing="5dp"
             android:numColumns="7">
         </GridView>
 </LinearLayout>

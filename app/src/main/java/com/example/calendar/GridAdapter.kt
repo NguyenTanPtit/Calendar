@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,7 +17,7 @@ class GridAdapter : ArrayAdapter<Any> {
     private var currentDate: Calendar
     private var events: MutableList<Events>
     private var layoutInflater: LayoutInflater
-
+    var currentDatePos = -1
     constructor(
         context: Context, dates: MutableList<Date>, currentDate: Calendar,
         events: MutableList<Events>
@@ -43,7 +42,11 @@ class GridAdapter : ArrayAdapter<Any> {
         val currentYear = currentDate.get(Calendar.YEAR)
 
         val view:View = convertView ?: layoutInflater.inflate(R.layout.single_cell_layout,parent,false)
+            view.background = context.resources
+                .getDrawable(R.drawable.bg_normal_day,null)
+
         val dayNumber:TextView = view.findViewById(R.id.day_cal)
+        val evenNum :TextView= view.findViewById(R.id.event)
 
         if(displayMonth == currentMonth && currentYear == displayYear){
             dayNumber.setTextColor(ContextCompat.getColor(context,R.color.black))
@@ -59,11 +62,15 @@ class GridAdapter : ArrayAdapter<Any> {
 
         if(currentDay == dayNum && monthOfCurrentDay == displayMonth
             && yearOfCurrentDay == displayYear ){
-            view.setBackgroundDrawable(context.resources.getDrawable(R.drawable.bg_cell_gridview))
+            currentDatePos = position
+            Log.d("currentDatePos", currentDatePos.toString())
+            view.background = context.resources
+                .getDrawable(R.drawable.bg_cell_gridview_currentday,null)
             dayNumber.setTextColor(ContextCompat.getColor(context,R.color.white))
+            evenNum.setTextColor(ContextCompat.getColor(context,R.color.white))
         }
+
         dayNumber.text = dayNum.toString()
-        val evenNum :TextView= view.findViewById(R.id.event)
         val eventCal = Calendar.getInstance()
         val arr = mutableListOf<String>()
         for(i in 0 until events.size){
@@ -72,9 +79,6 @@ class GridAdapter : ArrayAdapter<Any> {
                 Log.d("convert string to date", "null")
             }else {
                 eventCal.time = dayTime
-                Log.d("condition", (eventCal.get(Calendar.DAY_OF_MONTH)==currentDay&&displayMonth== eventCal.get(Calendar.MONTH)+1
-                        && displayYear == eventCal.get(Calendar.YEAR)).toString())
-
                 if(eventCal.get(Calendar.DAY_OF_MONTH) == dayNum && displayMonth== eventCal.get(Calendar.MONTH)+1
                     && displayYear == eventCal.get(Calendar.YEAR)){
                     arr.add(events[i].Event)
@@ -108,5 +112,9 @@ class GridAdapter : ArrayAdapter<Any> {
             Log.d("convertStringToDate", e.stackTraceToString())
         }
         return date
+    }
+
+    fun getCurrentDatePosition():Int{
+        return currentDatePos
     }
 }
