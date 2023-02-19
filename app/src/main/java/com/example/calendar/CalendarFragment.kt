@@ -128,7 +128,7 @@ class CalendarFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged", "UseCompatLoadingForDrawables")
     private fun setOnClickItemCal(){
         gridView.setOnItemClickListener { parent, view, position, id ->
-            currentDatePos = gridAdapter.getCurrentDatePosition()
+            currentDatePos = getCurrentDatePosition()
             currentPosition = position
             if(position!= currentDatePos) {
                 view.background = parent.context.resources
@@ -215,7 +215,7 @@ class CalendarFragment : Fragment() {
         val date = dateFormatSave.format(dates[position])
         getEventPerDay(date)
         Log.d("listEventDate", eventDayList.size.toString())
-        recyclerAdapter = EventRecyclerAdapter(context,eventDayList)
+        recyclerAdapter = EventRecyclerAdapter(requireContext(),eventDayList)
         recyclerView.adapter = recyclerAdapter
     }
 

@@ -5,8 +5,9 @@
     android:layout_height="80dp"
     android:layout_marginStart="5dp"
     android:layout_marginEnd="5dp"
+    android:layout_marginTop="1dp"
     android:padding="15dp"
-    app:cardCornerRadius="20dp">
+    app:cardCornerRadius="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,8 +20,9 @@
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:gravity="center_vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginEnd="5dp"
             android:text="15:30 am"
             android:textColor="@color/black"
             android:textSize="15sp"/>
@@ -30,21 +32,29 @@
             android:background="@color/gray"/>
         <TextView
             android:id="@+id/item_event_title"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_width="210dp"
+            android:layout_height="65dp"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="6dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/bg_item_event_title"
             android:fontFamily="@font/arimo"
             android:gravity="center_vertical"
-            android:paddingStart="5dp"
+            android:paddingStart="15dp"
+            android:lines="2"
             android:paddingEnd="5dp"
             android:text="Đi chợ"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:textStyle="bold"
+            android:textStyle="normal"
             />
+        <ImageView
+            android:id="@+id/item_event_delete"
+            android:layout_width="30dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/delete_icon"/>
 
     </LinearLayout>
 

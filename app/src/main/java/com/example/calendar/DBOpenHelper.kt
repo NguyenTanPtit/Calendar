@@ -50,6 +50,12 @@ class DBOpenHelper(context: Context) :
     fun deleteAllEvent(db:SQLiteDatabase){
         db.execSQL("delete from "+ DBStructure.EVENT_TABLE_NAME)
     }
+
+    fun deleteEvent(event: String , date: String, time : String, db : SQLiteDatabase){
+        val select = "${DBStructure.EVENT} = ? and ${DBStructure.DATE} = ? and ${DBStructure.TIME} = ?"
+        val selectArg = arrayOf(event,date,time)
+        db.delete(DBStructure.EVENT_TABLE_NAME,select,selectArg)
+    }
 }
 
 

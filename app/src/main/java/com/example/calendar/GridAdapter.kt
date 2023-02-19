@@ -113,8 +113,4 @@ class GridAdapter : ArrayAdapter<Any> {
         }
         return date
     }
-
-    fun getCurrentDatePosition():Int{
-        return currentDatePos
-    }
 }
