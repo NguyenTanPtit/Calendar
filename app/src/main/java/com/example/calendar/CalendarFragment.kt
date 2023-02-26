@@ -1,8 +1,12 @@
 package com.example.calendar
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
 import android.app.AlertDialog
+import android.app.PendingIntent
 import android.app.TimePickerDialog
+import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
@@ -56,6 +60,12 @@ class CalendarFragment : Fragment() {
     private var eventMonthList : MutableList<Events> = mutableListOf()
     private var eventDayList: MutableList<Events> = mutableListOf()
     private val cal2: Calendar = Calendar.getInstance()
+
+    private var alarmYear = -1
+    private var alarmMonth = -1
+    private var alarmDay = -1
+    private var alarmHour = -1
+    private var alarmMinute = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -234,6 +244,11 @@ class CalendarFragment : Fragment() {
             val currentTime = simpleDateFormat.format(cal3.time)
             timeSet.text = currentTime.toString()
 
+            cal3.time = dates[currentPosition]
+            alarmYear= cal3.get(Calendar.YEAR)
+            alarmMonth = cal3.get(Calendar.MONTH)
+            alarmDay = cal3.get(Calendar.DAY_OF_MONTH)
+
             eventTime.setOnClickListener{
                 val cal : Calendar = Calendar.getInstance()
                 val hours = cal.get(Calendar.HOUR_OF_DAY)
@@ -248,6 +263,9 @@ class CalendarFragment : Fragment() {
                         c.timeZone = TimeZone.getDefault()
                         val time = simpleDateFormat.format(c.time)
                         timeSet.text = time
+
+                        alarmHour = c.get(Calendar.HOUR_OF_DAY)
+                        alarmMinute = c.get(Calendar.MINUTE)
                     },hours,min,false)
                 timePicker.show()
             }
@@ -265,6 +283,9 @@ class CalendarFragment : Fragment() {
                 else {
                     saveEvent(name, timeSet.text.toString(), date, month, year)
                     setupCal()
+                    val calendar = Calendar.getInstance()
+                    calendar.set(alarmYear,alarmMonth,alarmDay,alarmHour,alarmMinute)
+                    setAlarm(calendar,name,timeSet.text.toString(),getCode(date,name,timeSet.text.toString()))
                     alertDialog.dismiss()
                 }
             }
@@ -281,5 +302,32 @@ class CalendarFragment : Fragment() {
 //        Log.d("time", (dates[17]== cal3.time).toString())
 //        Log.d("time2", cal3.time.toString())
         return dates.indexOf(cal3.time)
+    }
+
+    private fun setAlarm (cal:Calendar, event:String, time:String, code:Int){
+        val i = Intent(context,AlarmReceiver::class.java)
+        i.putExtra("event",event)
+        i.putExtra("time",time)
+        i.putExtra("id",code)
+        val pendingIntent:PendingIntent = PendingIntent
+                                        .getBroadcast(context,code,i,PendingIntent.FLAG_IMMUTABLE)
+        val alarmManager = context?.applicationContext?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.timeInMillis,pendingIntent)
+
+    }
+
+    @SuppressLint("Range")
+    private fun getCode(date: String, event:String, time : String):Int{
+        var code = 0
+        val dbOpen = DBOpenHelper(cal.getContexts())
+        val db: SQLiteDatabase = dbOpen.readableDatabase
+        val cursor : Cursor = dbOpen.readIDEvents(date,event,time,db)
+        while (cursor.moveToNext()) {
+            code = cursor.getInt(cursor.getColumnIndex(DBStructure.ID))
+            Log.d("request code", "$code")
+        }
+        cursor.close()
+        dbOpen.close()
+        return code
     }
 }

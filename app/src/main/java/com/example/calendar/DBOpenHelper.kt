@@ -56,6 +56,13 @@ class DBOpenHelper(context: Context) :
         val selectArg = arrayOf(event,date,time)
         db.delete(DBStructure.EVENT_TABLE_NAME,select,selectArg)
     }
+
+    fun readIDEvents(date:String, event:String, time:String, db:SQLiteDatabase): Cursor {
+        val projection = arrayOf(DBStructure.ID)
+        val selection = DBStructure.DATE + "= ? and " + DBStructure.EVENT +"= ? and " +DBStructure.TIME +"=?"
+        val arg = arrayOf(date,event,time)
+        return db.query(DBStructure.EVENT_TABLE_NAME,projection,selection,arg,null,null,null)
+    }
 }
 
 
