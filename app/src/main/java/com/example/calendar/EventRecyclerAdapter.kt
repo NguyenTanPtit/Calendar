@@ -8,7 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class EventRecyclerAdapter(var context: Context, private var listEvent: MutableList<Events>) :
+class EventRecyclerAdapter(var context: Context, private var listEvent: MutableList<Events>,
+                            private var listener :OnClickItemListener) :
     RecyclerView.Adapter<EventRecyclerAdapter.ViewHolder>() {
 
     private lateinit var  dbOpen : DBOpenHelper
@@ -32,9 +33,10 @@ class EventRecyclerAdapter(var context: Context, private var listEvent: MutableL
         holder.time.text = listEvent[position].Time
         holder.title.text = listEvent[position].Event
         holder.delete.setOnClickListener{
-            deleteEvent(listEvent[position].Event,listEvent[position].Date,listEvent[position].Time)
-            listEvent.removeAt(position)
-            notifyItemRemoved(position)
+//            deleteEvent(listEvent[position].Event,listEvent[position].Date,listEvent[position].Time)
+//            listEvent.removeAt(position)
+//            notifyItemRemoved(position)
+            listener.onClick(position)
         }
     }
 

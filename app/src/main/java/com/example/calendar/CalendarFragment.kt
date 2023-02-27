@@ -225,7 +225,15 @@ class CalendarFragment : Fragment() {
         val date = dateFormatSave.format(dates[position])
         getEventPerDay(date)
         Log.d("listEventDate", eventDayList.size.toString())
-        recyclerAdapter = EventRecyclerAdapter(requireContext(),eventDayList)
+        recyclerAdapter = EventRecyclerAdapter(requireContext(),eventDayList,
+            object : OnClickItemListener {
+                override fun onClick(position: Int) {
+                    deleteEvent(eventDayList[position].Event,eventDayList[position].Date,eventDayList[position].Time)
+                    eventDayList.removeAt(position)
+                    recyclerAdapter.notifyItemRemoved(position)
+                    setupCal()
+                }
+            })
         recyclerView.adapter = recyclerAdapter
     }
 
@@ -287,9 +295,9 @@ class CalendarFragment : Fragment() {
                     calendar.set(alarmYear,alarmMonth,alarmDay,alarmHour,alarmMinute)
                     setAlarm(calendar,name,timeSet.text.toString(),getCode(date,name,timeSet.text.toString()))
                     alertDialog.dismiss()
+                    initRecView(currentPosition)
                 }
             }
-
             builder.setView(addEventView)
             alertDialog = builder.create()
             alertDialog.show()
@@ -329,5 +337,12 @@ class CalendarFragment : Fragment() {
         cursor.close()
         dbOpen.close()
         return code
+    }
+
+    private fun deleteEvent(event: String , date: String, time : String){
+        val dbOpen = DBOpenHelper(cal.getContexts())
+        val db  = dbOpen.writableDatabase
+        dbOpen.deleteEvent(event,date,time,db)
+        dbOpen.close()
     }
 }
