@@ -292,8 +292,17 @@ class CalendarFragment : Fragment() {
                     saveEvent(name, timeSet.text.toString(), date, month, year)
                     setupCal()
                     val calendar = Calendar.getInstance()
+                    val now = calendar.timeInMillis
                     calendar.set(alarmYear,alarmMonth,alarmDay,alarmHour,alarmMinute)
-                    setAlarm(calendar,name,timeSet.text.toString(),getCode(date,name,timeSet.text.toString()))
+                    val alarmTime = calendar.timeInMillis
+                    if(now <= alarmTime) {
+                        setAlarm(
+                            calendar,
+                            name,
+                            timeSet.text.toString(),
+                            getCode(date, name, timeSet.text.toString())
+                        )
+                    }
                     alertDialog.dismiss()
                     initRecView(currentPosition)
                 }
