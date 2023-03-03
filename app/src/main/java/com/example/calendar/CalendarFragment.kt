@@ -227,10 +227,11 @@ class CalendarFragment : Fragment() {
         Log.d("listEventDate", eventDayList.size.toString())
         recyclerAdapter = EventRecyclerAdapter(requireContext(),eventDayList,
             object : OnClickItemListener {
+                @SuppressLint("NotifyDataSetChanged")
                 override fun onClick(position: Int) {
                     deleteEvent(eventDayList[position].Event,eventDayList[position].Date,eventDayList[position].Time)
                     eventDayList.removeAt(position)
-                    recyclerAdapter.notifyItemRemoved(position)
+                    recyclerAdapter.notifyDataSetChanged()
                     setupCal()
                 }
             })
@@ -242,7 +243,7 @@ class CalendarFragment : Fragment() {
         floatBtnAddEvent.setOnClickListener{
             val builder : AlertDialog.Builder = AlertDialog.Builder(context)
             builder.setCancelable(true)
-            val simpleDateFormat = SimpleDateFormat("HH:mm a")
+            val simpleDateFormat = SimpleDateFormat("HH:mm")
             val addEventView :View = LayoutInflater.from(context)
                 .inflate(R.layout.add_event_layout,null)
             val eventName: EditText = addEventView.findViewById(R.id.event_title)
@@ -294,6 +295,7 @@ class CalendarFragment : Fragment() {
                     val calendar = Calendar.getInstance()
                     val now = calendar.timeInMillis
                     calendar.set(alarmYear,alarmMonth,alarmDay,alarmHour,alarmMinute)
+                    Log.d("alarm", "$alarmMinute $alarmHour ")
                     val alarmTime = calendar.timeInMillis
                     if(now <= alarmTime) {
                         setAlarm(
@@ -329,7 +331,7 @@ class CalendarFragment : Fragment() {
         val pendingIntent:PendingIntent = PendingIntent
                                         .getBroadcast(context,code,i,PendingIntent.FLAG_IMMUTABLE)
         val alarmManager = context?.applicationContext?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.timeInMillis,pendingIntent)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis,pendingIntent)
 
     }
 
