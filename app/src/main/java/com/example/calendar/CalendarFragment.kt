@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.AbsListView.OnScrollListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -236,6 +237,7 @@ class CalendarFragment : Fragment() {
                 }
             })
         recyclerView.adapter = recyclerAdapter
+        hideFabWhenScroll()
     }
 
     private fun addEventOnClick(){
@@ -355,5 +357,18 @@ class CalendarFragment : Fragment() {
         val db  = dbOpen.writableDatabase
         dbOpen.deleteEvent(event,date,time,db)
         dbOpen.close()
+    }
+
+    private fun hideFabWhenScroll(){
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if(dy<0&&!floatBtnAddEvent.isShown){
+                    floatBtnAddEvent.show()
+                }
+                else if(dy>0 && floatBtnAddEvent.isShown){
+                    floatBtnAddEvent.hide()
+                }
+            }
+        })
     }
 }
