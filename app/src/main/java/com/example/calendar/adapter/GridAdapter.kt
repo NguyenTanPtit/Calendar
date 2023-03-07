@@ -1,4 +1,4 @@
-package com.example.calendar
+package com.example.calendar.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.example.calendar.Events
+import com.example.calendar.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,10 +51,10 @@ class GridAdapter : ArrayAdapter<Any> {
         val evenNum :TextView= view.findViewById(R.id.event)
 
         if(displayMonth == currentMonth && currentYear == displayYear){
-            dayNumber.setTextColor(ContextCompat.getColor(context,R.color.black))
+            dayNumber.setTextColor(ContextCompat.getColor(context, R.color.black))
         }
         else{
-            dayNumber.setTextColor(ContextCompat.getColor(context,R.color.gray))
+            dayNumber.setTextColor(ContextCompat.getColor(context, R.color.gray))
         }
 
         val cal2 = Calendar.getInstance()
@@ -66,8 +68,8 @@ class GridAdapter : ArrayAdapter<Any> {
             Log.d("currentDatePos", currentDatePos.toString())
             view.background = context.resources
                 .getDrawable(R.drawable.bg_cell_gridview_currentday,null)
-            dayNumber.setTextColor(ContextCompat.getColor(context,R.color.white))
-            evenNum.setTextColor(ContextCompat.getColor(context,R.color.white))
+            dayNumber.setTextColor(ContextCompat.getColor(context, R.color.white))
+            evenNum.setTextColor(ContextCompat.getColor(context, R.color.white))
         }
 
         dayNumber.text = dayNum.toString()

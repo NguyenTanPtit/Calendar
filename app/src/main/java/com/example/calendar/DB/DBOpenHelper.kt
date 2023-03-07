@@ -1,4 +1,4 @@
-package com.example.calendar
+package com.example.calendar.DB
 
 import android.content.ContentValues
 import android.content.Context
@@ -34,14 +34,24 @@ class DBOpenHelper(context: Context) :
     }
 
     fun readEventDate(date:String, db :SQLiteDatabase) :Cursor{
-        val pro = arrayOf(DBStructure.EVENT,DBStructure.TIME,DBStructure.DATE,DBStructure.MONTH,DBStructure.YEAR)
+        val pro = arrayOf(
+            DBStructure.EVENT,
+            DBStructure.TIME,
+            DBStructure.DATE,
+            DBStructure.MONTH,
+            DBStructure.YEAR)
         val select = "${DBStructure.DATE} = ?"
         val selectArgs = arrayOf(date)
         return db.query(DBStructure.EVENT_TABLE_NAME,pro,select,selectArgs,null,null,null)
     }
 
     fun readEventMonth(month:String, year:String, db :SQLiteDatabase) :Cursor{
-        val pro = arrayOf(DBStructure.EVENT,DBStructure.TIME,DBStructure.DATE,DBStructure.MONTH,DBStructure.YEAR)
+        val pro = arrayOf(
+            DBStructure.EVENT,
+            DBStructure.TIME,
+            DBStructure.DATE,
+            DBStructure.MONTH,
+            DBStructure.YEAR)
         val select = "${DBStructure.MONTH} = ? and ${DBStructure.YEAR} = ?"
         val selectArgs = arrayOf(month,year)
         return db.query(DBStructure.EVENT_TABLE_NAME,pro,select,selectArgs,null,null,null)
@@ -59,7 +69,7 @@ class DBOpenHelper(context: Context) :
 
     fun readIDEvents(date:String, event:String, time:String, db:SQLiteDatabase): Cursor {
         val projection = arrayOf(DBStructure.ID)
-        val selection = DBStructure.DATE + "= ? and " + DBStructure.EVENT +"= ? and " +DBStructure.TIME +"=?"
+        val selection = DBStructure.DATE + "= ? and " + DBStructure.EVENT +"= ? and " + DBStructure.TIME +"=?"
         val arg = arrayOf(date,event,time)
         return db.query(DBStructure.EVENT_TABLE_NAME,projection,selection,arg,null,null,null)
     }

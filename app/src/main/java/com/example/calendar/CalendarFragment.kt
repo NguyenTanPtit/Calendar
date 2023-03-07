@@ -15,10 +15,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.AbsListView.OnScrollListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.calendar.DB.DBOpenHelper
+import com.example.calendar.DB.DBStructure
+import com.example.calendar.adapter.EventRecyclerAdapter
+import com.example.calendar.adapter.GridAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.*

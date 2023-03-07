@@ -1,4 +1,4 @@
-package com.example.calendar
+package com.example.calendar.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,9 +7,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.calendar.DB.DBOpenHelper
+import com.example.calendar.Events
+import com.example.calendar.OnClickItemListener
+import com.example.calendar.R
 
 class EventRecyclerAdapter(var context: Context, private var listEvent: MutableList<Events>,
-                            private var listener :OnClickItemListener) :
+                           private var listener : OnClickItemListener
+) :
     RecyclerView.Adapter<EventRecyclerAdapter.ViewHolder>() {
 
     private lateinit var  dbOpen : DBOpenHelper

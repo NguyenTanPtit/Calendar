@@ -1,4 +1,4 @@
-package com.example.calendar
+package com.example.calendar.DB
 
 class DBStructure{
 
