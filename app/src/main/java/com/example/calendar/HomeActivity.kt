@@ -75,7 +75,7 @@ class HomeActivity : AppCompatActivity() {
                 //unselect 3 tab
                 litTv.visibility = View.GONE
                 litImg.layoutParams?.width = 80
-                litImg.setImageResource(R.drawable.book_icon)
+                litImg.setImageResource(R.drawable.features_icon)
                 litLayout.setBackgroundResource(android.R.color.transparent)
                 weatherTv.visibility = View.GONE
                 weatherImg.layoutParams?.width = 80
@@ -101,7 +101,7 @@ class HomeActivity : AppCompatActivity() {
                 //select Home
                 litTv.visibility = View.VISIBLE
                 litImg.layoutParams?.width = 65
-                litImg.setImageResource(R.drawable.book_selected_icon)
+                litImg.setImageResource(R.drawable.features_selected_icon)
                 litLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
                 fragment = LitFragment()
                 loadFragment(fragment)
@@ -143,7 +143,7 @@ class HomeActivity : AppCompatActivity() {
                 //unselect 3 tab
                 litTv.visibility = View.GONE
                 litImg.layoutParams?.width = 80
-                litImg.setImageResource(R.drawable.book_icon)
+                litImg.setImageResource(R.drawable.features_icon)
                 litLayout.setBackgroundResource(android.R.color.transparent)
                 homeTv.visibility = View.GONE
                 homeImg.layoutParams?.width = 80
@@ -177,7 +177,7 @@ class HomeActivity : AppCompatActivity() {
                 //unselect 3 tab
                 litTv.visibility = View.GONE
                 litImg.layoutParams?.width = 80
-                litImg.setImageResource(R.drawable.book_icon)
+                litImg.setImageResource(R.drawable.features_icon)
                 litLayout.setBackgroundResource(android.R.color.transparent)
                 weatherTv.visibility = View.GONE
                 weatherImg.layoutParams?.width = 80
