@@ -6,40 +6,121 @@
     android:layout_height="match_parent"
     tools:context=".ConvertDateActivity">
 
-    <EditText
-        android:id="@+id/edt_solarDay"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="88dp"
-        android:background="@drawable/bg_edittext"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:weightSum="3">
+
+
+        <TextView
+            android:background="@drawable/bg_txtview_convert"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:id="@+id/fromDateType"
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="Solar"
+            android:textSize="20sp"
+          />
+
+        <ImageView
+            android:id="@+id/swap"
+            android:layout_width="20dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:layout_marginTop="13dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/swap_icon"
+            />
+
+        <TextView
+            android:background="@drawable/bg_txtview_convert"
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:id="@+id/convertTo"
+            android:textColor="@color/black"
+            android:text="Lunar"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            />
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        android:id="@+id/edt_solarDay"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="dd/mm/yyyy"
+        app:boxStrokeWidthFocused="1dp"
+        app:errorEnabled="true"
+        app:helperTextEnabled="true"
+        app:helperTextTextColor="#F12323"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.094"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputSolarDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:layout_marginTop="40dp"
         android:id="@+id/pickSolarDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginStart="28dp"
         android:background="@drawable/bg_button"
-        android:padding="8dp"
-        android:text="Pick your day"
+        android:text="Pick day"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintStart_toEndOf="@+id/edt_solarDay"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <Button
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/bg_button"
+        android:backgroundTint="@color/black"
+        android:text="Result"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_solarDay" />
 
     <TextView
         android:id="@+id/lunaDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.345"
+        android:layout_marginTop="30dp"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_solarDay" />
+        app:layout_constraintTop_toBottomOf="@+id/result" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

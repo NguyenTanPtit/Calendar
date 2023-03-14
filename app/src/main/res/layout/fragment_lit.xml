@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lines="2"
-                android:text="Convert lunar date to solar date"
+                android:text="Convert solar date to lunar date"
                 android:textSize="20sp"
                 android:fontFamily="@font/arimo"
                 android:textColor="@color/black"
