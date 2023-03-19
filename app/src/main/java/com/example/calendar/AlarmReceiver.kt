@@ -11,7 +11,6 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -29,7 +28,7 @@ class AlarmReceiver: BroadcastReceiver() {
         0,activityIntent,PendingIntent. FLAG_IMMUTABLE)
 
         val chanelID = "chanel_id"
-        val name : CharSequence = "chanel_name"
+        val name : CharSequence = "Notification Event"
         val des = "description"
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             val channel = NotificationChannel(chanelID,name,NotificationManager.IMPORTANCE_HIGH)
@@ -40,6 +39,7 @@ class AlarmReceiver: BroadcastReceiver() {
 
         val notify : Notification = NotificationCompat.Builder(context,chanelID).setSmallIcon(R.mipmap.ic_launcher)
             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM))
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setContentTitle(event)
             .setContentText(time)
             .setDeleteIntent(pendingIntent)
@@ -51,14 +51,7 @@ class AlarmReceiver: BroadcastReceiver() {
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            val builder : AlertDialog.Builder = AlertDialog.Builder(context)
-            builder.setCancelable(true)
-            val alertView : View = LayoutInflater.from(context)
-                .inflate(R.layout.alert_permission,null)
-            builder.setView(alertView)
-            alertDialog = builder.create()
-            alertDialog.show()
-            alertDialog.window?.setBackgroundDrawableResource(R.drawable.bg_alert_dialog)
+          return
         }
         notificationManager.notify(notiID,notify)
     }

@@ -1,13 +1,21 @@
 package com.example.calendar
 
+import android.app.Notification
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 
@@ -31,11 +39,21 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var fragment: Fragment
 
+    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+    private var isPushNotificationGranted = false
+
     private var selectedTab :Int = 1
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         init()
+        Log.d("permission",  isPushNotificationGranted.toString())
+        permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){ permissions ->
+            isPushNotificationGranted = permissions[android.Manifest.permission.POST_NOTIFICATIONS]?:isPushNotificationGranted
+        }
+        requestPermission()
+        Log.d("permission",  isPushNotificationGranted.toString())
     }
 
     private fun init(){
@@ -205,6 +223,20 @@ class HomeActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.frame_home,fragment)
         fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun requestPermission(){
+        isPushNotificationGranted = ContextCompat.checkSelfPermission(this,
+            android.Manifest.permission.POST_NOTIFICATIONS)==PackageManager.PERMISSION_GRANTED
+
+        val permissionRequest:MutableList<String> = ArrayList()
+        if(!isPushNotificationGranted){
+            permissionRequest.add(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
+        if(permissionRequest.isNotEmpty()){
+            permissionLauncher.launch(permissionRequest.toTypedArray())
+        }
     }
 }
 

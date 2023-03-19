@@ -7,14 +7,18 @@ import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -70,7 +74,7 @@ class CalendarFragment : Fragment() {
     private var alarmDay = -1
     private var alarmHour = -1
     private var alarmMinute = -1
-
+    private var isPushNotificationGranted = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -269,7 +273,7 @@ class CalendarFragment : Fragment() {
                 val min = cal.get(Calendar.MINUTE)
 
                 val timePicker = TimePickerDialog(addEventView.context,
-                    androidx.appcompat.R.style.Theme_AppCompat_Dialog,
+                    R.style.MyTimePickerDialogTheme,
                     { view, hourOfDay, minute ->
                         val c = Calendar.getInstance()
                         c.set(Calendar.HOUR_OF_DAY,hourOfDay)
@@ -329,6 +333,35 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setAlarm (cal:Calendar, event:String, time:String, code:Int){
+        isPushNotificationGranted = context?.let {
+            ContextCompat.checkSelfPermission(
+                it,
+                android.Manifest.permission.POST_NOTIFICATIONS)
+        } == PackageManager.PERMISSION_GRANTED
+        Log.d("per", isPushNotificationGranted.toString())
+            if(!isPushNotificationGranted){
+                val builder : AlertDialog.Builder = AlertDialog.Builder(context)
+                builder.setCancelable(true)
+                val viewDialog = LayoutInflater.from(context).
+                                    inflate(R.layout.alert_dialog_request_permission,null)
+                builder.setView(viewDialog)
+                val alertDialog : AlertDialog = builder.create()
+                alertDialog.show()
+                alertDialog.window?.setBackgroundDrawableResource(R.drawable.bg_alert_dialog)
+                val okButton = viewDialog.findViewById<Button>(R.id.alertDialogOK)
+
+                okButton.setOnClickListener {
+                    startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.fromParts("package", "com.example.calendar", null)
+                    })
+                    alertDialog.dismiss()
+                }
+
+                val cancelButton = viewDialog.findViewById<Button>(R.id.alertDialogCancel)
+                cancelButton.setOnClickListener {
+                    alertDialog.cancel()
+                }
+            }
         val i = Intent(context,AlarmReceiver::class.java)
         i.putExtra("event",event)
         i.putExtra("time",time)
