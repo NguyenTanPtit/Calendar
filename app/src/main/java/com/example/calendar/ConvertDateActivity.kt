@@ -1,19 +1,30 @@
 package com.example.calendar
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
+import android.app.*
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
+import androidx.core.content.ContextCompat
+import com.example.calendar.DB.DBOpenHelper
+import com.example.calendar.DB.DBStructure
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import java.util.Calendar
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ConvertDateActivity : AppCompatActivity() {
 
@@ -25,6 +36,16 @@ class ConvertDateActivity : AppCompatActivity() {
     private lateinit var fromDateType: TextView
     private lateinit var convertTo: TextView
     private lateinit var swap: ImageView
+    private lateinit var addEvent: Button
+    private val dateFormatSave = SimpleDateFormat("dd/MM/yyyy")
+    var monthFormat = SimpleDateFormat("MM")
+    var yearFormat = SimpleDateFormat("yyyy")
+    private var alarmYear = -1
+    private var alarmMonth = -1
+    private var alarmDay = -1
+    private var alarmHour = -1
+    private var alarmMinute = -1
+    private lateinit var alertDialog : AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +62,7 @@ class ConvertDateActivity : AppCompatActivity() {
         fromDateType = findViewById(R.id.fromDateType)
         convertTo = findViewById(R.id.convertTo)
         swap = findViewById(R.id.swap)
+        addEvent = findViewById(R.id.convertDate_addEvent)
         setOnclick()
     }
 
@@ -66,6 +88,7 @@ class ConvertDateActivity : AppCompatActivity() {
             solarDayLayout.error = null
         }
 
+        addEventOnClick()
     }
 
     @SuppressLint("SetTextI18n")
@@ -94,10 +117,10 @@ class ConvertDateActivity : AppCompatActivity() {
             solarDayLayout.error = null
             if(fromDateType.text.equals("Solar")){
                 val lunaDateArray  =  convertDate.convertSolar2Lunar(dateNum,monthNum,yearNum,7.0)
-                resultText.text = "${lunaDateArray[0]} / ${lunaDateArray[1]} / ${lunaDateArray[2]}"
+                resultText.text = "${lunaDateArray[0]}/${lunaDateArray[1]}/${lunaDateArray[2]}"
             }else{
                 val solarDateArray  =  convertDate.convertLunar2Solar(dateNum,monthNum,yearNum,0,7.0)
-                resultText.text = "${solarDateArray[0]} / ${solarDateArray[1]} / ${solarDateArray[2]}"
+                resultText.text = "${solarDateArray[0]}/${solarDateArray[1]}/${solarDateArray[2]}"
             }
 
         }catch (e:java.lang.Exception){
@@ -131,5 +154,133 @@ class ConvertDateActivity : AppCompatActivity() {
             convertTo.text = "Lunar"
         }
         Log.d("positionType", fromDateType.text as String)
+    }
+
+    private fun addEventOnClick(){
+        val cal3 = Calendar.getInstance()
+        addEvent.setOnClickListener{
+            val date:String = textInputSolarDay.text.toString()
+            if(date.isBlank()){
+                solarDayLayout.error = "The date is not empty!"
+                return@setOnClickListener
+            }
+            val builder : AlertDialog.Builder = AlertDialog.Builder(this)
+            builder.setCancelable(true)
+            val simpleDateFormat = SimpleDateFormat("HH:mm")
+            val addEventView : View = LayoutInflater.from(this)
+                .inflate(R.layout.add_event_layout,null)
+            val eventName: EditText = addEventView.findViewById(R.id.event_title)
+            val eventTime: LinearLayout = addEventView.findViewById(R.id.event_time)
+            val addEvent: Button = addEventView.findViewById(R.id.event_add_btn)
+            val timeSet: TextView = addEventView.findViewById(R.id.time_set)
+            val currentTime = simpleDateFormat.format(cal3.time)
+            timeSet.text = currentTime.toString()
+
+
+            eventTime.setOnClickListener{
+                val cal : Calendar = Calendar.getInstance()
+                val hours = cal.get(Calendar.HOUR_OF_DAY)
+                val min = cal.get(Calendar.MINUTE)
+
+                val timePicker = TimePickerDialog(addEventView.context,
+                    R.style.MyTimePickerDialogTheme,
+                    { view, hourOfDay, minute ->
+                        val c = Calendar.getInstance()
+                        c.set(Calendar.HOUR_OF_DAY,hourOfDay)
+                        c.set(Calendar.MINUTE,minute)
+                        c.timeZone = TimeZone.getDefault()
+                        val time = simpleDateFormat.format(c.time)
+                        timeSet.text = time
+
+                        alarmHour = c.get(Calendar.HOUR_OF_DAY)
+                        alarmMinute = c.get(Calendar.MINUTE)
+                    },hours,min,false)
+                timePicker.show()
+            }
+
+
+            addEvent.setOnClickListener {
+                val name = eventName.text.toString()
+                if(name.isBlank()){
+                    Toast.makeText(this,"Title is not blank!", Toast.LENGTH_SHORT).show()
+                }
+                else {
+
+                    Log.d("Date Saved2", dateFormatSave.parse(date).toString())
+                    if(fromDateType.text.equals("Solar")) {
+                        val dateEvent = dateFormatSave.parse(date)
+                        cal3.time = dateEvent
+                        val dateSave = dateFormatSave.format(dateEvent)
+                        val monthSave = monthFormat.format(dateEvent)
+                        val yearSave = yearFormat.format(dateEvent)
+
+                        saveEvent(name, timeSet.text.toString(), dateSave, monthSave,yearSave)
+                    }else{
+                        val dateEvent = dateFormatSave.parse(resultText.text.toString())
+                        cal3.time = dateEvent
+                        val dateSave = dateFormatSave.format(dateEvent)
+                        val monthSave = monthFormat.format(dateEvent)
+                        val yearSave = yearFormat.format(dateEvent)
+                        saveEvent(name, timeSet.text.toString(), dateSave, monthSave,yearSave)
+                    }
+                    alarmYear= cal3.get(Calendar.YEAR)
+                    alarmMonth = cal3.get(Calendar.MONTH)
+                    alarmDay = cal3.get(Calendar.DAY_OF_MONTH)
+                    Log.d("Date alarm ", cal3.time.toString())
+                    val calendar = Calendar.getInstance()
+                    val now = calendar.timeInMillis
+                    calendar.set(alarmYear,alarmMonth,alarmDay,alarmHour,alarmMinute)
+                    Log.d("alarm2", "$alarmMinute $alarmHour ")
+                    val alarmTime = calendar.timeInMillis
+                    Log.d("alarmTime", calendar.time.toString())
+                    if(now <= alarmTime) {
+                        setAlarm(
+                            calendar,
+                            name,
+                            timeSet.text.toString(),
+                            getCode(date, name, timeSet.text.toString())
+                        )
+                    }
+                    alertDialog.dismiss()
+                }
+            }
+            builder.setView(addEventView)
+            alertDialog = builder.create()
+            alertDialog.show()
+            alertDialog.window?.setBackgroundDrawableResource(R.drawable.bg_alert_dialog)
+        }
+    }
+    @SuppressLint("Range")
+    private fun getCode(date: String, event:String, time : String):Int{
+        var code = 0
+        val dbOpen = DBOpenHelper(this)
+        val db: SQLiteDatabase = dbOpen.readableDatabase
+        val cursor : Cursor = dbOpen.readIDEvents(date,event,time,db)
+        while (cursor.moveToNext()) {
+            code = cursor.getInt(cursor.getColumnIndex(DBStructure.ID))
+            Log.d("request code", "$code")
+        }
+        cursor.close()
+        dbOpen.close()
+        return code
+    }
+
+    private fun setAlarm (cal:Calendar, event:String, time:String, code:Int){
+        val i = Intent(this,AlarmReceiver::class.java)
+        i.putExtra("event",event)
+        i.putExtra("time",time)
+        i.putExtra("id",code)
+        val pendingIntent: PendingIntent = PendingIntent
+            .getBroadcast(this,code,i, PendingIntent.FLAG_IMMUTABLE)
+        val alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis,pendingIntent)
+
+    }
+    private fun saveEvent(name:String, time:String, date:String, month:String, year: String){
+        val dbOpen = DBOpenHelper(this)
+        val db = dbOpen.writableDatabase
+        dbOpen.saveEvent(name,time,date,month,year,db)
+        db.close()
+        Toast.makeText(this,"Saved!",Toast.LENGTH_SHORT).show()
     }
 }

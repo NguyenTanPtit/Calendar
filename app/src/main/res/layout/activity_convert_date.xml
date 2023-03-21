@@ -17,7 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         android:weightSum="3">
 
-
         <TextView
             android:background="@drawable/bg_txtview_convert"
             android:layout_marginEnd="5dp"
@@ -103,7 +102,7 @@
         android:layout_marginTop="36dp"
         android:background="@drawable/bg_button"
         android:backgroundTint="@color/black"
-        android:text="Result"
+        android:text="Convert"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -115,13 +114,38 @@
         android:id="@+id/lunaDay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:textSize="25sp"
         android:layout_marginTop="50dp"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:text="22/10/2001"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/result" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="40dp"
+        android:text="Result:"
+        android:textColor="@color/black"
+        android:textSize="25sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/result" />
 
+    <Button
+        android:id="@+id/convertDate_addEvent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="92dp"
+        android:background="@drawable/bg_button"
+        android:text="Add Event"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lunaDay" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
