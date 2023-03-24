@@ -4,13 +4,9 @@ import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,9 +14,10 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import android.widget.*
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import com.example.calendar.DB.DBOpenHelper
 import com.example.calendar.DB.DBStructure
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
@@ -32,6 +29,7 @@ class ConvertDateActivity : AppCompatActivity() {
     private lateinit var  textInputSolarDay :TextInputEditText
     private lateinit var pickSolarDay : Button
     private lateinit var result : Button
+    private lateinit var backBtn :FloatingActionButton
     private lateinit var resultText: TextView
     private lateinit var fromDateType: TextView
     private lateinit var convertTo: TextView
@@ -63,6 +61,7 @@ class ConvertDateActivity : AppCompatActivity() {
         convertTo = findViewById(R.id.convertTo)
         swap = findViewById(R.id.swap)
         addEvent = findViewById(R.id.convertDate_addEvent)
+        backBtn = findViewById(R.id.btnBack)
         setOnclick()
     }
 
@@ -89,6 +88,11 @@ class ConvertDateActivity : AppCompatActivity() {
         }
 
         addEventOnClick()
+
+        backBtn.setOnClickListener {
+            val i = Intent(this,HomeActivity::class.java)
+            startActivity(i)
+        }
     }
 
     @SuppressLint("SetTextI18n")

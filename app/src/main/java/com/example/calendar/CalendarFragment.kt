@@ -60,7 +60,7 @@ class CalendarFragment : Fragment() {
     private var currentPosition = -1
     private var currentDatePos = -1
 
-    private var dateFormat = SimpleDateFormat("MMM yyyy")
+    private var dateFormat = SimpleDateFormat("MMMM yyyy")
     private val dateFormatSave = SimpleDateFormat("dd/MM/yyyy")
     var monthFormat = SimpleDateFormat("MM")
     var yearFormat = SimpleDateFormat("yyyy")
@@ -180,7 +180,8 @@ class CalendarFragment : Fragment() {
         val month = cal2.clone() as Calendar
         month.set(Calendar.DAY_OF_MONTH,1)
 
-        val firstDayOfMonth = month.get(Calendar.DAY_OF_WEEK) -2
+        val firstDayOfMonth = month.get(Calendar.DAY_OF_WEEK) - 2
+        Log.d("firstDayOfMonth", "${month.get(Calendar.DAY_OF_WEEK)}")
         month.add(Calendar.DAY_OF_MONTH, -firstDayOfMonth)
         getEventPerMonth(monthFormat.format(cal2.time), yearFormat.format(cal2.time))
         while (dates.size < MAX_DAY){
