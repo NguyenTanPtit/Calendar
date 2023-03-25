@@ -55,6 +55,7 @@ class CalendarFragment : Fragment() {
     private lateinit var nextBtn: ImageView
     private lateinit var preBtn: ImageView
     private lateinit var floatBtnAddEvent: FloatingActionButton
+    private lateinit var emptyState :LinearLayout
 
     private val MAX_DAY = 42
     private var currentPosition = -1
@@ -125,6 +126,7 @@ class CalendarFragment : Fragment() {
         nextBtn = cal.getNextBtn()
         preBtn = cal.getPreBtn()
         floatBtnAddEvent = view.findViewById(R.id.float_btn_add_event_cal)
+        emptyState = view.findViewById(R.id.empty_state)
         setupCal()
         nextBtn.setOnClickListener{
             cal2.add(Calendar.MONTH,+1)
@@ -233,19 +235,30 @@ class CalendarFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         val date = dateFormatSave.format(dates[position])
         getEventPerDay(date)
-        Log.d("listEventDate", eventDayList.size.toString())
-        recyclerAdapter = EventRecyclerAdapter(requireContext(),eventDayList,
-            object : OnClickItemListener {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun onClick(position: Int) {
-                    deleteEvent(eventDayList[position].Event,eventDayList[position].Date,eventDayList[position].Time)
-                    eventDayList.removeAt(position)
-                    recyclerAdapter.notifyDataSetChanged()
-                    setupCal()
-                }
-            })
-        recyclerView.adapter = recyclerAdapter
-        hideFabWhenScroll()
+        if(eventDayList.size > 0) {
+            emptyState.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+            Log.d("listEventDate", eventDayList.size.toString())
+            recyclerAdapter = EventRecyclerAdapter(requireContext(), eventDayList,
+                object : OnClickItemListener {
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onClick(position: Int) {
+                        deleteEvent(
+                            eventDayList[position].Event,
+                            eventDayList[position].Date,
+                            eventDayList[position].Time
+                        )
+                        eventDayList.removeAt(position)
+                        recyclerAdapter.notifyDataSetChanged()
+                        setupCal()
+                    }
+                })
+            recyclerView.adapter = recyclerAdapter
+            hideFabWhenScroll()
+        }else{
+            emptyState.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
+        }
     }
 
     private fun addEventOnClick(){
