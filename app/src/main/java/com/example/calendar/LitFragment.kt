@@ -24,6 +24,7 @@ class LitFragment : Fragment() {
 
     private lateinit var view: View
     private lateinit var convertDate: CardView
+    private lateinit var timer: CardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,12 +66,18 @@ class LitFragment : Fragment() {
 
     private fun initView(){
         convertDate = view.findViewById(R.id.convert)
+        timer = view.findViewById(R.id.timer)
         nextActivity()
     }
 
     private fun nextActivity(){
         convertDate.setOnClickListener{
             val i = Intent(context,ConvertDateActivity::class.java)
+            startActivity(i)
+        }
+
+        timer.setOnClickListener {
+            val i = Intent(context,TimerActivity::class.java)
             startActivity(i)
         }
     }

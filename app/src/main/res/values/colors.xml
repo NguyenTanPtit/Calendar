@@ -18,5 +18,7 @@
     <color name="literature_20">#336AEA8A</color>
     <color name="weather_20">#33EA4ABA</color>
     <color name="profile_20">#33EFBB42</color>
-
+    <array name="progress_bar">
+        <item>#FFD702</item>
+    </array>
 </resources>
