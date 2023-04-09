@@ -58,7 +58,7 @@ class TimerActivity : AppCompatActivity() {
     }
 
     private fun startTimer(){
-        timerCountDown = object : CountDownTimer(secondsRemaining,1000){
+        timerCountDown = object : CountDownTimer(timerLengthSecond,1000){
             override fun onTick(millisUntilFinished: Long){
                 secondsRemaining = millisUntilFinished
                 updateCountDown()
