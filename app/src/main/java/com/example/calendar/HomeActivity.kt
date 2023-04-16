@@ -1,6 +1,7 @@
 package com.example.calendar
 
 import android.app.Notification
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -17,6 +18,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 
 
@@ -43,6 +45,8 @@ class HomeActivity : AppCompatActivity() {
     private var isPushNotificationGranted = false
 
     private var selectedTab :Int = 1
+
+    public val REQUEST_CODE_TIMER = 999
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +78,7 @@ class HomeActivity : AppCompatActivity() {
 
         //default fragment 1
         fragment  = CalendarFragment()
-        loadFragment(fragment)
+        loadFragment(fragment,"cal")
 
         setOnclick()
     }
@@ -88,7 +92,7 @@ class HomeActivity : AppCompatActivity() {
                 homeImg.setImageResource(R.drawable.calendar_selected_icon)
                 homeLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
                 fragment = CalendarFragment()
-                loadFragment(fragment)
+                loadFragment(fragment,"cal")
 
                 //unselect 3 tab
                 litTv.visibility = View.GONE
@@ -122,7 +126,7 @@ class HomeActivity : AppCompatActivity() {
                 litImg.setImageResource(R.drawable.features_selected_icon)
                 litLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
                 fragment = LitFragment()
-                loadFragment(fragment)
+                loadFragment(fragment,"lit")
 
                 //unselect 3 tab
                 homeTv.visibility = View.GONE
@@ -156,7 +160,7 @@ class HomeActivity : AppCompatActivity() {
                 weatherImg.setImageResource(R.drawable.weather_selected_icon)
                 weatherLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
                 fragment = WeatherFragment()
-                loadFragment(fragment)
+                loadFragment(fragment,"weather")
 
                 //unselect 3 tab
                 litTv.visibility = View.GONE
@@ -190,7 +194,7 @@ class HomeActivity : AppCompatActivity() {
                 profileImg.setImageResource(R.drawable.user_selected_icon)
                 profileLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
                 fragment = ProfileFragment()
-                loadFragment(fragment)
+                loadFragment(fragment,"profile")
 
                 //unselect 3 tab
                 litTv.visibility = View.GONE
@@ -218,10 +222,10 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadFragment(fragment: Fragment){
+    private fun loadFragment(fragment: Fragment, name: String){
         val fragmentTransaction : FragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame_home,fragment)
-        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.addToBackStack(name)
         fragmentTransaction.commit()
     }
 
@@ -236,6 +240,17 @@ class HomeActivity : AppCompatActivity() {
         }
         if(permissionRequest.isNotEmpty()){
             permissionLauncher.launch(permissionRequest.toTypedArray())
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_TIMER && resultCode == RESULT_OK){
+            if(data!=null) {
+                val name = data.getStringExtra("name")
+                val manager: FragmentManager = supportFragmentManager
+                manager.popBackStack(name,0)
+            }
         }
     }
 }

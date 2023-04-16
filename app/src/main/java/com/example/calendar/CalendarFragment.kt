@@ -56,6 +56,7 @@ class CalendarFragment : Fragment() {
     private lateinit var preBtn: ImageView
     private lateinit var floatBtnAddEvent: FloatingActionButton
     private lateinit var emptyState :LinearLayout
+    private lateinit var upComingTxt: TextView
 
     private val MAX_DAY = 42
     private var currentPosition = -1
@@ -127,6 +128,7 @@ class CalendarFragment : Fragment() {
         preBtn = cal.getPreBtn()
         floatBtnAddEvent = view.findViewById(R.id.float_btn_add_event_cal)
         emptyState = view.findViewById(R.id.empty_state)
+        upComingTxt = view.findViewById(R.id.textView3)
         setupCal()
         nextBtn.setOnClickListener{
             cal2.add(Calendar.MONTH,+1)
@@ -237,6 +239,7 @@ class CalendarFragment : Fragment() {
         getEventPerDay(date)
         if(eventDayList.size > 0) {
             emptyState.visibility = View.GONE
+            upComingTxt.visibility = View.VISIBLE
             recyclerView.visibility = View.VISIBLE
             Log.d("listEventDate", eventDayList.size.toString())
             recyclerAdapter = EventRecyclerAdapter(requireContext(), eventDayList,
@@ -258,6 +261,7 @@ class CalendarFragment : Fragment() {
         }else{
             emptyState.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
+            upComingTxt.visibility = View.GONE
         }
     }
 

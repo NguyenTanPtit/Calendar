@@ -42,7 +42,7 @@ class DBOpenHelper(context: Context) :
             DBStructure.YEAR)
         val select = "${DBStructure.DATE} = ?"
         val selectArgs = arrayOf(date)
-        return db.query(DBStructure.EVENT_TABLE_NAME,pro,select,selectArgs,null,null,null)
+        return db.query(DBStructure.EVENT_TABLE_NAME,pro,select,selectArgs,null,null, DBStructure.TIME)
     }
 
     fun readEventMonth(month:String, year:String, db :SQLiteDatabase) :Cursor{
