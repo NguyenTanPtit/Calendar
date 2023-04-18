@@ -25,7 +25,6 @@ class ConvertDate {
     }
 
     /**
-     * http://www.tondering.dk/claus/calendar.html
      * Section: Is there a formula for calculating the Julian day number?
      * @param jd - the number of days since 1 January 4713 BC (Julian calendar)
      * @return

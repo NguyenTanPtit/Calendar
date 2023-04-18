@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.calendar.DB.DBOpenHelper
@@ -82,6 +83,13 @@ class ConvertDateActivity : AppCompatActivity() {
 
         swap.setOnClickListener{
             swap()
+        }
+        textInputSolarDay.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                convertDate()
+                return@setOnEditorActionListener true
+            }
+            false
         }
         textInputSolarDay.setOnClickListener {
             solarDayLayout.error = null
@@ -166,7 +174,7 @@ class ConvertDateActivity : AppCompatActivity() {
             val date:String = textInputSolarDay.text.toString()
             if(date.isBlank()){
                 solarDayLayout.error = "The date is not empty!"
-                return@setOnClickListener
+//                return@setOnClickListener
             }
             val builder : AlertDialog.Builder = AlertDialog.Builder(this)
             builder.setCancelable(true)

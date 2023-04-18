@@ -30,7 +30,7 @@
         app:boxStrokeWidthFocused="1dp"
         app:errorEnabled="true"
         app:helperTextEnabled="true"
-        app:helperTextTextColor="#F12323"
+        app:helperTextTextColor="@color/black"
         android:layout_marginTop="30dp"
         >
 
@@ -38,7 +38,10 @@
             android:id="@+id/textInputSetTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:lines="1"
+            android:imeOptions="actionDone"
+            android:maxLength="8"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 
