@@ -1,5 +1,6 @@
 package com.example.calendar
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -71,7 +72,9 @@ class StopWatchActivity : AppCompatActivity() {
 
     private fun setOnClick(){
         back.setOnClickListener{
-            onBackPressedDispatcher.onBackPressed()
+            val i = Intent(this, HomeActivity::class.java)
+            i.putExtra("fragment", "lit")
+            setResult(RESULT_OK, i)
             finish()
         }
 
