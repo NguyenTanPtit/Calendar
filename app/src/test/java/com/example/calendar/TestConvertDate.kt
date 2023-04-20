@@ -1,8 +1,8 @@
 package com.example.calendar
 
+import com.example.calendar.model.ConvertDate
 import org.junit.Assert.*
 import org.junit.Test
-import java.util.*
 
 class TestConvertDate {
     private val c = ConvertDate()

@@ -1,4 +1,4 @@
-package com.example.calendar
+package com.example.calendar.model
 
 import kotlin.math.floor
 import kotlin.math.sin

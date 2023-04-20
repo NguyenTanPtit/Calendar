@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.example.calendar.Events
+import com.example.calendar.model.Events
 import com.example.calendar.R
 import java.text.SimpleDateFormat
 import java.util.*

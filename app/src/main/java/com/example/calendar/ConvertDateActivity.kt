@@ -18,6 +18,8 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.calendar.DB.DBOpenHelper
 import com.example.calendar.DB.DBStructure
+import com.example.calendar.model.AlarmReceiver
+import com.example.calendar.model.ConvertDate
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -278,7 +280,7 @@ class ConvertDateActivity : AppCompatActivity() {
     }
 
     private fun setAlarm (cal:Calendar, event:String, time:String, code:Int){
-        val i = Intent(this,AlarmReceiver::class.java)
+        val i = Intent(this, AlarmReceiver::class.java)
         i.putExtra("event",event)
         i.putExtra("time",time)
         i.putExtra("id",code)

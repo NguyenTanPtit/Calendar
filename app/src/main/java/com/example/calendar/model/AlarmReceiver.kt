@@ -1,4 +1,4 @@
-package com.example.calendar
+package com.example.calendar.model
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -9,11 +9,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.RingtoneManager
 import android.os.Build
-import android.view.LayoutInflater
-import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.example.calendar.HomeActivity
+import com.example.calendar.R
 
 class AlarmReceiver: BroadcastReceiver() {
     private lateinit var alertDialog : AlertDialog
@@ -23,7 +23,7 @@ class AlarmReceiver: BroadcastReceiver() {
         val event = intent.getStringExtra("event")
         val time = intent.getStringExtra("time")
         val notiID = intent.getIntExtra("id",0)
-        val activityIntent = Intent(context,HomeActivity::class.java)
+        val activityIntent = Intent(context, HomeActivity::class.java)
         val pendingIntent: PendingIntent = PendingIntent.getActivity(context,
         0,activityIntent,PendingIntent. FLAG_IMMUTABLE)
 

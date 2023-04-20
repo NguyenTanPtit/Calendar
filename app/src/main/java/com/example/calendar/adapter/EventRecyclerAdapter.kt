@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.calendar.Events
+import com.example.calendar.model.Events
 import com.example.calendar.OnClickItemListener
 import com.example.calendar.R
 

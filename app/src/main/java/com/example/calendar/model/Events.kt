@@ -1,4 +1,4 @@
-package com.example.calendar
+package com.example.calendar.model
 
 class Events {
     private lateinit var event:String

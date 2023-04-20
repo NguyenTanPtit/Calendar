@@ -26,6 +26,8 @@ import com.example.calendar.DB.DBOpenHelper
 import com.example.calendar.DB.DBStructure
 import com.example.calendar.adapter.EventRecyclerAdapter
 import com.example.calendar.adapter.GridAdapter
+import com.example.calendar.model.AlarmReceiver
+import com.example.calendar.model.Events
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.*
@@ -380,7 +382,7 @@ class CalendarFragment : Fragment() {
                     alertDialog.cancel()
                 }
             }
-        val i = Intent(context,AlarmReceiver::class.java)
+        val i = Intent(context, AlarmReceiver::class.java)
         i.putExtra("event",event)
         i.putExtra("time",time)
         i.putExtra("id",code)
