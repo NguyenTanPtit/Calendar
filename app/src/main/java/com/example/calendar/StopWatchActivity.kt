@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.ListView
@@ -51,6 +53,13 @@ class StopWatchActivity : AppCompatActivity() {
         adapter  = ArrayAdapter(this,R.layout.listview_item_stopwatch,
         listTime)
         listHistory.adapter = adapter
+
+        val anim = AlphaAnimation(0.0f, 1.0f)
+        anim.duration = 500
+        anim.startOffset = 20
+        anim.repeatMode = Animation.REVERSE
+        anim.repeatCount = Animation.INFINITE
+
         val handler = Handler()
         handler.post(object : Runnable{
             override fun run() {
@@ -62,7 +71,11 @@ class StopWatchActivity : AppCompatActivity() {
                     hour,min,sec)
                 time.text = mTime
                 if(timeState == TimerState.Running){
+                    time.clearAnimation()
                     second++
+                }
+                if(timeState == TimerState.Paused){
+                    time.startAnimation(anim)
                 }
                 handler.postDelayed(this,1000)
             }
@@ -110,6 +123,7 @@ class StopWatchActivity : AppCompatActivity() {
     private fun onReset(){
         second = 0
         timeState = TimerState.Stopped
+        time.clearAnimation()
         playBtn.setImageResource(R.drawable.icon_play)
         listTime.clear()
         adapter.notifyDataSetChanged()

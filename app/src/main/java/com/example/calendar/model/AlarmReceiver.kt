@@ -16,7 +16,6 @@ import com.example.calendar.HomeActivity
 import com.example.calendar.R
 
 class AlarmReceiver: BroadcastReceiver() {
-    private lateinit var alertDialog : AlertDialog
 
     @SuppressLint("UnspecifiedImmutableFlag")
     override fun onReceive(context: Context, intent: Intent) {
@@ -25,7 +24,7 @@ class AlarmReceiver: BroadcastReceiver() {
         val notiID = intent.getIntExtra("id",0)
         val activityIntent = Intent(context, HomeActivity::class.java)
         val pendingIntent: PendingIntent = PendingIntent.getActivity(context,
-        0,activityIntent,PendingIntent. FLAG_IMMUTABLE)
+        0,activityIntent,PendingIntent.FLAG_IMMUTABLE)
 
         val chanelID = "chanel_id"
         val name : CharSequence = "Notification Event"
