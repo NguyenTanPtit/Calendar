@@ -18,6 +18,6 @@ interface APIInterface {
     fun getCityWeatherData(
         @Query("q") q:String,
         @Query("APPID") appID:String
-    )
+    ): Call<WeatherModel>
 
 }
