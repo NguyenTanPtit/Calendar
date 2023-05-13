@@ -1,20 +1,17 @@
-package com.example.calendar
+package com.example.calendar.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
-import android.content.SharedPreferences.Editor
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
-import com.google.android.gms.location.LocationRequest;
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,11 +22,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.example.calendar.R
+import com.example.calendar.api.APIObject
 import com.example.calendar.model.WeatherModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
@@ -42,7 +44,9 @@ import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZoneId
 import java.util.Date
+import java.util.TimeZone
 import kotlin.math.roundToInt
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -80,6 +84,9 @@ class WeatherFragment : Fragment() {
     private lateinit var seaValue: TextView
     private lateinit var countryValue: TextView
     private lateinit var windValue: TextView
+    private lateinit var weatherImg :ImageView
+    private lateinit var mainLayout : ConstraintLayout
+
     private val apiKey = "a684a608819bf86f1d174077e7fcec4b"
 
     private lateinit var locationRequest: LocationRequest
@@ -142,7 +149,10 @@ class WeatherFragment : Fragment() {
         seaValue = viewRoot.findViewById(R.id.sea_value)
         countryValue = viewRoot.findViewById(R.id.country_value)
         windValue = viewRoot.findViewById(R.id.wind_value)
+        weatherImg = viewRoot.findViewById(R.id.weather_img)
+        mainLayout = viewRoot.findViewById(R.id.mainLayout)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
         getLocationUpdates()
         getCurrentLocation()
         edtSearch.setOnEditorActionListener { textView, i, keyEvent ->
@@ -183,6 +193,8 @@ class WeatherFragment : Fragment() {
                     return
                 }
                 Log.d("fusedLocationProviderClient", fusedLocationProviderClient.lastLocation.toString())
+                fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,
+                    Looper.getMainLooper())
                 fusedLocationProviderClient.lastLocation
                     .addOnSuccessListener { location ->
 //                        Log.d("location check", location.toString())
@@ -263,7 +275,7 @@ class WeatherFragment : Fragment() {
     private fun getCityWeather(city: String){
         APIObject.getAPIInterface()?.getCityWeatherData(city,apiKey)
             ?.enqueue(object :Callback<WeatherModel>{
-//                @RequiresApi(Build.VERSION_CODES.O)
+                @RequiresApi(Build.VERSION_CODES.O)
                 override fun onResponse(
                     call: Call<WeatherModel>,
                     response: Response<WeatherModel>
@@ -286,7 +298,7 @@ class WeatherFragment : Fragment() {
             })
     }
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
-//    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setData(body:WeatherModel) {
         val currentDate = SimpleDateFormat("dd/MM/yyyy hh:mm").format(Date())
         dateTime.text = currentDate.toString()
@@ -295,6 +307,7 @@ class WeatherFragment : Fragment() {
         temp.text = "" + k2c(body?.main?.temp!!) + "°"
         weatherTitle.text = body.weather[0].main
         sunriseValue.text = ts2td(body.sys.sunrise.toLong())
+        Log.d("Sys", "${body.sys.sunrise}")
         sunsetValue.text = ts2td(body.sys.sunset.toLong())
         pressureValue.text = body.main.pressure.toString()
         humidityValue.text = body.main.humidity.toString() + "%"
@@ -306,25 +319,80 @@ class WeatherFragment : Fragment() {
         groundValue.text = body.main.grnd_level.toString()
         seaValue.text = body.main.sea_level.toString()
         countryValue.text = body.sys.country
+        Log.d("TIME ZONE", "${TimeZone.getAvailableIDs()} ")
+
+        updateUI(body.weather[0].id)
     }
+
+    private fun updateUI(id: Int) {
+        when(id){
+            //Thunderstorm
+            in 200..232 -> {
+                weatherImg.setImageResource(R.drawable.ic_storm_weather)
+                mainLayout.background = ContextCompat.getDrawable(requireContext(),R.drawable.thunderstrom_bg)
+            }
+
+            //Drizzle
+            in 300..321 -> {
+                weatherImg.setImageResource(R.drawable.ic_few_clouds)
+                mainLayout.background = ContextCompat.getDrawable(requireContext(),R.drawable.drizzle_bg)
+            }
+            //Rain
+            in 500..531 -> {
+                weatherImg.setImageResource(R.drawable.ic_rainy_weather)
+                mainLayout.background = ContextCompat.getDrawable(requireContext(),R.drawable.rain_bg)
+            }
+
+            //Snow
+            in 600..631 -> {
+                weatherImg.setImageResource(R.drawable.ic_snow_weather)
+                mainLayout.background = ContextCompat.getDrawable(requireContext(),R.drawable.snow_bg)
+            }
+
+            //Atmosphere
+            in 700..731 -> {
+                weatherImg.setImageResource(R.drawable.ic_broken_clouds)
+                mainLayout.background = ContextCompat.getDrawable(requireContext(),R.drawable.atmosphere_bg)
+            }
+
+            //Clear
+            800 ->{
+                weatherImg.setImageResource(R.drawable.ic_clear_day)
+                mainLayout.background = ContextCompat.getDrawable(requireContext(),R.drawable.clear_bg)
+            }
+
+            //Clouds
+            in 801..804 ->{
+                weatherImg.setImageResource(R.drawable.ic_cloudy_weather)
+                mainLayout.background = ContextCompat.getDrawable(requireContext(),R.drawable.clouds_bg)
+            }
+
+            //unknown
+            else->{
+                weatherImg.setImageResource(R.drawable.ic_unknown)
+                mainLayout.background = ContextCompat.getDrawable(requireContext(),R.drawable.unknown_bg)
+            }
+        }
+    }
+
     private fun k2c(t:Double):Double{
         var intTemp=t
         intTemp=intTemp.minus(273)
         return intTemp.toBigDecimal().setScale(1, RoundingMode.UP).toDouble()
     }
-//    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun ts2td(ts:Long):String{
         val localTime=ts.let {
             Instant.ofEpochSecond(it)
                 .atZone(ZoneId.systemDefault())
                 .toLocalTime()
-
         }
         return localTime.toString()
     }
     private fun fetchCurrentLocationWeather(latitude: String, longitude: String) {
         APIObject.getAPIInterface()?.getCurrentWeatherData(latitude,longitude,apiKey)
             ?.enqueue(object :Callback<WeatherModel>{
+                @RequiresApi(Build.VERSION_CODES.O)
                 override fun onResponse(call: Call<WeatherModel>, response: Response<WeatherModel>) {
                     Log.d("resLocation",response.body().toString())
                     if (response.isSuccessful){
@@ -353,7 +421,6 @@ class WeatherFragment : Fragment() {
     }
     private fun getLocationUpdates()
     {
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context!!)
         locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,
             1000)
             .setIntervalMillis(60000)
@@ -362,11 +429,7 @@ class WeatherFragment : Fragment() {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
 
-//                if (locationResult.locations.isNotEmpty()) {
-//                }
             }
         }
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback,
-            Looper.getMainLooper())
     }
 }

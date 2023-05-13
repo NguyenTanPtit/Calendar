@@ -1,4 +1,4 @@
-package com.example.calendar
+package com.example.calendar.fragment
 
 import android.annotation.SuppressLint
 import android.app.AlarmManager
@@ -22,8 +22,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.calendar.CustomCalendarView
 import com.example.calendar.DB.DBOpenHelper
 import com.example.calendar.DB.DBStructure
+import com.example.calendar.OnClickItemListener
+import com.example.calendar.R
 import com.example.calendar.adapter.EventRecyclerAdapter
 import com.example.calendar.adapter.GridAdapter
 import com.example.calendar.model.AlarmReceiver
@@ -49,7 +52,7 @@ class CalendarFragment : Fragment() {
     private var param2: String? = null
     private lateinit var recyclerAdapter: EventRecyclerAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var cal :CustomCalendarView
+    private lateinit var cal : CustomCalendarView
     private lateinit var view : View
     private lateinit var gridView : GridView
     private lateinit var alertDialog : AlertDialog

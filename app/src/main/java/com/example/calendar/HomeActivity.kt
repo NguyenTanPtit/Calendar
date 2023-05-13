@@ -1,6 +1,5 @@
 package com.example.calendar
 
-import android.app.Notification
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -20,6 +19,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.calendar.fragment.CalendarFragment
+import com.example.calendar.fragment.LitFragment
+import com.example.calendar.fragment.ProfileFragment
+import com.example.calendar.fragment.WeatherFragment
 
 
 class HomeActivity : AppCompatActivity() {

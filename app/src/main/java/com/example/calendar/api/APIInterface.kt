@@ -1,4 +1,4 @@
-package com.example.calendar
+package com.example.calendar.api
 
 import com.example.calendar.model.WeatherModel
 import retrofit2.Call

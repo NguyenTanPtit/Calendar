@@ -1,4 +1,4 @@
-package com.example.calendar
+package com.example.calendar.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
+import com.example.calendar.ConvertDateActivity
+import com.example.calendar.R
+import com.example.calendar.StopWatchActivity
+import com.example.calendar.TimerActivity
 
 
 private const val ARG_PARAM1 = "param1"
@@ -74,17 +78,17 @@ class LitFragment : Fragment() {
 
     private fun nextActivity(){
         convertDate.setOnClickListener{
-            val i = Intent(context,ConvertDateActivity::class.java)
+            val i = Intent(context, ConvertDateActivity::class.java)
             startActivity(i)
         }
 
         timer.setOnClickListener {
-            val i = Intent(context,TimerActivity::class.java)
+            val i = Intent(context, TimerActivity::class.java)
             startActivity(i)
         }
 
         stopWatch.setOnClickListener {
-            val i = Intent(context,StopWatchActivity::class.java)
+            val i = Intent(context, StopWatchActivity::class.java)
             startActivity(i)
         }
     }
