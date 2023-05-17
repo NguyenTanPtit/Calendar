@@ -12,44 +12,54 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#F3F1EB">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="100dp"
             android:orientation="vertical">
 
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/convert"
-                android:layout_width="200dp"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:elevation="10dp"
                 android:padding="5dp"
                 app:cardCornerRadius="15dp">
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:src="@drawable/convert_day"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginEnd="5dp"
                     android:fontFamily="@font/arimo"
                     android:text="Convert Date"
                     android:textColor="@color/black"
                     android:textSize="25sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="140dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="5dp"
                     android:fontFamily="@font/arimo"
                     android:lines="2"
+                    android:gravity="center"
                     android:text="Convert solar date to lunar date"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
@@ -57,21 +67,26 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/timer"
-                android:layout_width="190dp"
-                android:layout_height="wrap_content"
+                android:layout_width="250dp"
+                android:layout_height="200dp"
                 android:layout_margin="10dp"
                 android:elevation="10dp"
                 android:padding="5dp"
                 app:cardCornerRadius="15dp">
-
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/timer_img"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="35dp"
                     android:layout_marginEnd="5dp"
                     android:fontFamily="@font/arimo"
                     android:text="Timer"
+                    android:layout_gravity="center"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     android:textStyle="bold" />
@@ -80,11 +95,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="70dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="5dp"
                     android:fontFamily="@font/arimo"
-                    android:lines="2"
+                    android:lines="1"
+                    android:layout_gravity="center"
                     android:text="Timer countdown"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
@@ -92,37 +108,31 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/stopWatch"
-                android:layout_width="190dp"
-                android:layout_height="wrap_content"
+                android:layout_width="250dp"
+                android:layout_height="180dp"
                 android:layout_margin="10dp"
-                android:elevation="10dp"
+                android:elevation="15dp"
                 android:padding="5dp"
                 app:cardCornerRadius="15dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/stopwatch_img"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginEnd="5dp"
                     android:fontFamily="@font/arimo"
                     android:text="StopWatch"
+                    android:layout_gravity="center"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="50dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/arimo"
-                    android:lines="2"
-                    android:text="StopWatch......"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>

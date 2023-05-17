@@ -100,8 +100,7 @@ class ConvertDateActivity : AppCompatActivity() {
         addEventOnClick()
 
         backBtn.setOnClickListener {
-            val i = Intent(this,HomeActivity::class.java)
-            startActivity(i)
+            finish()
         }
     }
 

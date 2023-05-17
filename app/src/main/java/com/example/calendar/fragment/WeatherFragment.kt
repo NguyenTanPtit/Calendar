@@ -19,6 +19,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -86,6 +87,7 @@ class WeatherFragment : Fragment() {
     private lateinit var windValue: TextView
     private lateinit var weatherImg :ImageView
     private lateinit var mainLayout : ConstraintLayout
+    private lateinit var progressBar : ProgressBar
 
     private val apiKey = "a684a608819bf86f1d174077e7fcec4b"
 
@@ -151,6 +153,7 @@ class WeatherFragment : Fragment() {
         windValue = viewRoot.findViewById(R.id.wind_value)
         weatherImg = viewRoot.findViewById(R.id.weather_img)
         mainLayout = viewRoot.findViewById(R.id.mainLayout)
+        progressBar = viewRoot.findViewById(R.id.progress_bar)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         getLocationUpdates()
@@ -200,6 +203,7 @@ class WeatherFragment : Fragment() {
 //                        Log.d("location check", location.toString())
                         if (location != null) {
                             this.location = location
+                            progressBar.visibility = View.VISIBLE
                             fetchCurrentLocationWeather(
                                 location.latitude.toString(),
                                 location.longitude.toString()
@@ -222,7 +226,6 @@ class WeatherFragment : Fragment() {
     }
 
     private fun requestPermission() {
-
         ActivityCompat.requestPermissions(
             requireActivity(),
             arrayOf( android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -273,6 +276,7 @@ class WeatherFragment : Fragment() {
     }
 
     private fun getCityWeather(city: String){
+        progressBar.visibility = View.VISIBLE
         APIObject.getAPIInterface()?.getCityWeatherData(city,apiKey)
             ?.enqueue(object :Callback<WeatherModel>{
                 @RequiresApi(Build.VERSION_CODES.O)
@@ -282,12 +286,14 @@ class WeatherFragment : Fragment() {
                 ) {
                     Log.d("res",response.body().toString())
                     if(response.isSuccessful){
+                        progressBar.visibility = View.GONE
                         response.body()?.let {
                             setData(it)
                         }
                     }else{
                         Toast.makeText(activity, "No City Found",
                             Toast.LENGTH_SHORT).show()
+                        progressBar.visibility = View.GONE
                     }
                 }
 
@@ -396,6 +402,7 @@ class WeatherFragment : Fragment() {
                 override fun onResponse(call: Call<WeatherModel>, response: Response<WeatherModel>) {
                     Log.d("resLocation",response.body().toString())
                     if (response.isSuccessful){
+                        progressBar.visibility = View.GONE
                         response.body()?.let {
                             setData(it)
                         }

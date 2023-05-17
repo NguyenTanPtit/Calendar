@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.CustomCalendarView
 import com.example.calendar.DB.DBOpenHelper
 import com.example.calendar.DB.DBStructure
-import com.example.calendar.OnClickItemListener
+import com.example.calendar.adapter.OnClickItemListener
 import com.example.calendar.R
 import com.example.calendar.adapter.EventRecyclerAdapter
 import com.example.calendar.adapter.GridAdapter

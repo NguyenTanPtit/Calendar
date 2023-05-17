@@ -81,10 +81,6 @@ class TimerActivity : AppCompatActivity() {
         }
 
         backBtn.setOnClickListener {
-            dialog.dismiss()
-            val i = Intent(this, HomeActivity::class.java)
-            i.putExtra("fragment", "lit")
-            setResult(RESULT_OK, i)
             finish()
         }
 

@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.model.Events
-import com.example.calendar.OnClickItemListener
 import com.example.calendar.R
 
 class EventRecyclerAdapter(var context: Context, private var listEvent: MutableList<Events>,
