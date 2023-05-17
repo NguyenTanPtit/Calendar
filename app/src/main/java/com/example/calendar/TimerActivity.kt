@@ -191,7 +191,6 @@ class TimerActivity : AppCompatActivity() {
     private fun setTime() {
         val timeInput: String = edtTime.text.toString()
         timerLengthSecond = if (timeInput.isBlank()) {
-
             600000L
         } else {
             val reg = ":".toRegex()

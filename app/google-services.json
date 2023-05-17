@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "713401059331",
+    "project_id": "calendar-ptit",
+    "storage_bucket": "calendar-ptit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713401059331:android:2f5e89e0edca470424e636",
+        "android_client_info": {
+          "package_name": "com.example.calendar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713401059331-ar5c7luu83vci9av8ku93mi7buj199ib.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.calendar",
+            "certificate_hash": "76d3b09dec69890b5b54285edf98ffef401a6b80"
+          }
+        },
+        {
+          "client_id": "713401059331-7hhsq5av8sms347qsmefs1ddbbov22r7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3b4UuCg28nio7I3aZ08ad2mXcpzYiyj8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713401059331-7hhsq5av8sms347qsmefs1ddbbov22r7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
