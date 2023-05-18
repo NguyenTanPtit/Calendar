@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import com.bumptech.glide.Glide
+import com.example.calendar.EditProfileActivity
 import com.example.calendar.R
 import com.example.calendar.WelcomeActivity
 import com.example.calendar.model.User
@@ -134,7 +135,7 @@ class ProfileFragment : Fragment() {
         }
 
         btnEdit.setOnClickListener {
-
+            startActivity(Intent(requireContext(),EditProfileActivity::class.java))
         }
     }
 }

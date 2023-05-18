@@ -103,7 +103,7 @@ class RegisterActivity : AppCompatActivity() {
 
             auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener{it1 ->
                 if(it1.isSuccessful){
-                    val user = User(null,fullName,email,password,null)
+                    val user = User(null,fullName,email,password,null,null)
                     if(auth.currentUser!=null){
                         val id :String = auth.currentUser!!.uid
                         user.id = id

@@ -6,4 +6,176 @@
     android:layout_height="match_parent"
     tools:context=".EditProfileActivity">
 
+    <TextView
+        android:id="@+id/tvCancel"
+        android:fontFamily="@font/montserrat_semibold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="Cancel"
+        android:textColor="#F85252"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_avatar"
+        android:layout_width="152dp"
+        android:layout_height="152dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/default_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"/>
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="212dp"
+        android:src="@drawable/add_img_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.652"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/edt_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_avatar">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Full Name"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_marginStart="50dp"/>
+        <EditText
+            android:id="@+id/edt_full_name"
+            android:layout_width="350dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:textSize="20sp"
+            android:text="NguyenTan"
+            android:inputType="text"
+            android:maxLines="1"
+            />
+        <TextView
+            android:id="@+id/full_name_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Full Name is required!"
+            android:textSize="15sp"
+            android:textColor="#F46969"
+            android:visibility="gone"
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_marginStart="50dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/edt_email_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_name_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Email"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edt_email"
+            android:layout_width="350dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:inputType="none"
+            android:editable="false"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/edt_phone_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_email_layout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Phone Number"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edt_phone_num"
+            android:layout_width="350dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/phone_num_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone number is required"
+            android:textSize="15sp"
+            android:textColor="#F46969"
+            android:visibility="gone"
+            android:fontFamily="@font/montserrat_medium"
+            android:layout_marginStart="50dp"/>
+    </LinearLayout>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSave"
+        android:layout_width="350dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/bg_btn_login"
+        android:backgroundTint="@color/black"
+        android:textSize="20sp"
+        android:text="Save"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_phone_layout" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
