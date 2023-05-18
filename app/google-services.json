@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "713401059331",
+    "firebase_url": "https://calendar-ptit-default-rtdb.firebaseio.com",
     "project_id": "calendar-ptit",
     "storage_bucket": "calendar-ptit.appspot.com"
   },
@@ -22,7 +23,7 @@
           }
         },
         {
-          "client_id": "713401059331-7hhsq5av8sms347qsmefs1ddbbov22r7.apps.googleusercontent.com",
+          "client_id": "713401059331-hlqrlo0po5bphkov50ktn0bsv0oob2oc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

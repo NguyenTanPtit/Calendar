@@ -3,9 +3,16 @@ package com.example.calendar
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import com.example.calendar.model.User
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import java.lang.reflect.InvocationTargetException
 
 class WelcomeActivity : AppCompatActivity() {
     private lateinit var loginBtn: AppCompatButton
@@ -16,6 +23,7 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         initView()
+//        testCreateUser()
     }
 
     private fun initView(){
@@ -38,5 +46,17 @@ class WelcomeActivity : AppCompatActivity() {
             val i = Intent(this,RegisterActivity::class.java)
             startActivity(i)
         }
+    }
+    private fun testCreateUser(){
+        try {
+            val database = Firebase.database.reference
+            val user = User("NguyenTan","tan@gmail.com","123")
+            database.child("Test").child("dhakjkda").setValue(user).addOnSuccessListener {
+                println("pass")
+            }
+        }catch (e: InvocationTargetException){
+            Log.d("exxxxxxx", "${e.targetException}")
+        }
+
     }
 }
