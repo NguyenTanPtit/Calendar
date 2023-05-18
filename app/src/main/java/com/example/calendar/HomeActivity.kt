@@ -22,7 +22,9 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.calendar.fragment.CalendarFragment
 import com.example.calendar.fragment.LitFragment
 import com.example.calendar.fragment.ProfileFragment
+import com.example.calendar.fragment.ProifleNoUserFragment
 import com.example.calendar.fragment.WeatherFragment
+import com.google.firebase.auth.FirebaseAuth
 
 
 class HomeActivity : AppCompatActivity() {
@@ -49,7 +51,8 @@ class HomeActivity : AppCompatActivity() {
 
     private var selectedTab :Int = 1
 
-    public val REQUEST_CODE_TIMER = 999
+    val REQUEST_CODE_TIMER = 999
+    private lateinit var auth: FirebaseAuth
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +81,8 @@ class HomeActivity : AppCompatActivity() {
         litImg=findViewById(R.id.nav_img_lit)
         weatherImg=findViewById(R.id.nav_img_weather)
         profileImg=findViewById(R.id.nav_img_profile)
+
+        auth = FirebaseAuth.getInstance()
 
         //default fragment 1
         fragment  = CalendarFragment()
@@ -196,7 +201,13 @@ class HomeActivity : AppCompatActivity() {
                 profileImg.layoutParams?.width = 65
                 profileImg.setImageResource(R.drawable.user_selected_icon)
                 profileLayout.setBackgroundResource(R.drawable.bot_nav_back_item)
-                fragment = ProfileFragment()
+                fragment = if(auth.currentUser!=null){
+                    Log.d("hasUser", "yes")
+                    ProfileFragment()
+                }else{
+                    Log.d("hasUser", "No")
+                    ProifleNoUserFragment()
+                }
                 loadFragment(fragment,"profile")
 
                 //unselect 3 tab

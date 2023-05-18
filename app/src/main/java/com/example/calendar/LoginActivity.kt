@@ -68,7 +68,9 @@ class LoginActivity : AppCompatActivity() {
             }
             auth.signInWithEmailAndPassword(email,pass).addOnCompleteListener {
                 if(it.isSuccessful) {
-                    startActivity(Intent(this, HomeActivity::class.java))
+                    val intent = Intent(this, HomeActivity::class.java)
+                    intent.putExtra("type","email")
+                    startActivity(intent)
                     finish()
                 }else if(it.exception!=null){
                     val exception: FirebaseAuthException = it.exception as FirebaseAuthException

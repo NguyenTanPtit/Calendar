@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.getIntent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -22,6 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.calendar.CustomCalendarView
 import com.example.calendar.DB.DBOpenHelper
 import com.example.calendar.DB.DBStructure
@@ -31,7 +33,18 @@ import com.example.calendar.adapter.EventRecyclerAdapter
 import com.example.calendar.adapter.GridAdapter
 import com.example.calendar.model.AlarmReceiver
 import com.example.calendar.model.Events
+import com.example.calendar.model.User
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -62,7 +75,9 @@ class CalendarFragment : Fragment() {
     private lateinit var floatBtnAddEvent: FloatingActionButton
     private lateinit var emptyState :LinearLayout
     private lateinit var upComingTxt: TextView
+    private lateinit var avatar: CircleImageView
 
+    private lateinit var type:String
     private val MAX_DAY = 42
     private var currentPosition = -1
     private var currentDatePos = -1
@@ -82,6 +97,10 @@ class CalendarFragment : Fragment() {
     private var alarmHour = -1
     private var alarmMinute = -1
     private var isPushNotificationGranted = false
+
+    private lateinit var auth : FirebaseAuth
+    private lateinit var acc : GoogleSignInAccount
+    private lateinit var firebaseDatabase: FirebaseDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -125,6 +144,7 @@ class CalendarFragment : Fragment() {
             }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initView(){
         cal = view.findViewById(R.id.custom_cal)
         recyclerView = view.findViewById(R.id.recycle_cal_event)
@@ -134,7 +154,43 @@ class CalendarFragment : Fragment() {
         floatBtnAddEvent = view.findViewById(R.id.float_btn_add_event_cal)
         emptyState = view.findViewById(R.id.empty_state)
         upComingTxt = view.findViewById(R.id.textView3)
+        avatar = view.findViewById(R.id.user_avatar)
+        type = requireActivity().intent.getStringExtra("type").toString()
+        auth = FirebaseAuth.getInstance()
+        firebaseDatabase = Firebase.database
+        val user = auth.currentUser
+        if(type=="email"){
+            if(user!=null) {
+                firebaseDatabase.getReference("Users").child(user.uid).addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val mUser = snapshot.getValue(User::class.java)
+                        if(mUser != null){
+                            upComingTxt.text = "Hello, ${mUser.fullName}"
+                            upComingTxt.visibility = View.VISIBLE
+                            Glide.with(requireContext()).load(mUser.imgUrl).error(R.drawable.default_avatar).into(avatar)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        //TODO("Not yet implemented")
+                    }
+                })
+            }
+        }
+        else if(type=="GG"){
+            if(GoogleSignIn.getLastSignedInAccount(requireContext()) != null){
+                acc = GoogleSignIn.getLastSignedInAccount(requireContext())!!
+                upComingTxt.text = "Hello, ${acc.displayName}"
+                upComingTxt.visibility = View.VISIBLE
+                Glide.with(requireContext()).load(acc.photoUrl).into(avatar)
+            }
+        }
+        else {
+            avatar.visibility = View.GONE
+            upComingTxt.visibility = View.GONE
+        }
         setupCal()
+
         nextBtn.setOnClickListener{
             cal2.add(Calendar.MONTH,+1)
             setupCal()
@@ -266,7 +322,6 @@ class CalendarFragment : Fragment() {
         }else{
             emptyState.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
-            upComingTxt.visibility = View.GONE
         }
     }
 
@@ -350,8 +405,6 @@ class CalendarFragment : Fragment() {
 
     private fun getCurrentDatePosition(): Int {
         val cal3 = cal2.clone() as Calendar
-//        Log.d("time", (dates[17]== cal3.time).toString())
-//        Log.d("time2", cal3.time.toString())
         return dates.indexOf(cal3.time)
     }
 

@@ -2,19 +2,17 @@ package com.example.calendar
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import com.example.calendar.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -78,6 +76,12 @@ class RegisterActivity : AppCompatActivity() {
                 edtPassword.clearFocus()
                 return@setOnClickListener
             }
+            if(password.length<6||password.length>18){
+                passwordError.text = "Password length must be between 6-18 characters"
+                passwordError.visibility = View.VISIBLE
+                edtPassword.clearFocus()
+                return@setOnClickListener
+            }
             if(confirmPass.isBlank()){
                 confirmPasswordError.text = "Confirm password is required!"
                 confirmPasswordError.visibility = View.VISIBLE
@@ -101,7 +105,6 @@ class RegisterActivity : AppCompatActivity() {
                 if(it1.isSuccessful){
                     val user = User(null,fullName,email,password,null)
                     if(auth.currentUser!=null){
-                        Log.d("click check", "yes")
                         val id :String = auth.currentUser!!.uid
                         user.id = id
                         addUser(user)
