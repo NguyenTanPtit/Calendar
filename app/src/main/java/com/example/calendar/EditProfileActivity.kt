@@ -1,5 +1,6 @@
 package com.example.calendar
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -23,7 +24,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import de.hdodenhof.circleimageview.CircleImageView
-import java.util.Objects
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var avatar: CircleImageView
@@ -89,6 +89,7 @@ class EditProfileActivity : AppCompatActivity() {
         setOnClick()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setOnClick(){
         avatar.setOnClickListener {
             val intent = Intent()
@@ -152,10 +153,13 @@ class EditProfileActivity : AppCompatActivity() {
                 if(profileUri!=null){
                     avatar.setImageURI(profileUri)
                     val reference: StorageReference = firebaseStorage.reference
-                    val taskUpLoad = reference.child("profile_picture").child(user.uid).putFile(profileUri)
+
+                    val taskUpLoad = reference.child("profile_picture")
+                        .child(user.uid).putFile(profileUri)
 
                     taskUpLoad.addOnSuccessListener {
-                        reference.child("profile_picture").child(user.uid).downloadUrl.addOnSuccessListener {it2->
+                        reference.child("profile_picture").child(user.uid).downloadUrl
+                            .addOnSuccessListener {it2->
                             firebaseDatabase.getReference("Users").child(user.uid)
                                 .child("imgUrl").setValue(it2.toString())
                         }

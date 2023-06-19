@@ -131,7 +131,6 @@
         android:layout_marginTop="50dp"
         android:textColor="@color/black"
         android:textSize="25sp"
-        android:text="22/10/2001"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toEndOf="@+id/textView2"
